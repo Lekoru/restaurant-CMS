@@ -1,12 +1,10 @@
-## Easymunch
-
-## [Live Site Here](https://easymunch.netlify.app/)
+## Restaurant-CMS
 
 <br>
 
 A cutting-edge restaurant and food delivery website designed to redefine your dining experience.
 
-Crafted with precision and innovation, Easymunch brings together the best of technology 
+Crafted with precision and innovation, Restaurant-CMS brings together the best of technology 
 to offer you a seamless and delectable journey from menu exploration to doorstep delivery.
 
 <br>
@@ -33,11 +31,3 @@ to offer you a seamless and delectable journey from menu exploration to doorstep
 3. Bootstrap.
 4. Redux Toolkit.
 5. Jest.
-
-
-![1](https://github.com/Sir-Rumeh/easymunch/assets/95687544/da98c8a6-6ec6-4836-9ce8-02dea38069d8)
-
-![2](https://github.com/Sir-Rumeh/easymunch/assets/95687544/51aff656-82fb-4a2b-aff0-081140b1bf52)
-
-![3](https://github.com/Sir-Rumeh/easymunch/assets/95687544/8fe71848-f7f8-475d-bc95-7a2242018820)
-
