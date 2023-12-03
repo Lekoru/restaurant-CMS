@@ -4,7 +4,6 @@ import { setAuth, saveAuthToLocal } from "../redux/silces/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-
 function Login() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,8 +40,8 @@ function Login() {
   const errorDiv = <small className="text-danger">{error}</small>;
 
   return (
-    <div>
-      <div className="container" style={{ minHeight: "100vh" }}>
+    <div style={{height: '100%'}}>
+      <div className="container" style={{overflow: 'hidden', height: '100%'}}>
         <form onSubmit={loginUser}>
           <div className="row d-flex justify-content-center my-4">
             <div className="col-11 col-md-8 col-lg-5">

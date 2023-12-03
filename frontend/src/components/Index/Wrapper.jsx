@@ -6,7 +6,7 @@ function Wrapper() {
       className=""
       style={{
         zIndex: "1",
-        width: "100%",
+        width: "100%"
       }}
     >
       <div className="container-fluid px-md-4 pt-md-5">
