@@ -2,8 +2,8 @@ import { useState } from "react";
 import { login } from "../helpers/web";
 import { setAuth, saveAuthToLocal } from "../redux/silces/authSlice";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import SignIns from "../ui/SignIns";
+import { useNavigate } from "react-router-dom";
+
 
 function Login() {
   let navigate = useNavigate();
@@ -42,27 +42,6 @@ function Login() {
 
   return (
     <div>
-      <div className="container-fluid pt-5">
-        <SignIns argss={"In"} />
-        {/*<!-- horizontal line with OR -->*/}
-        <div className="row d-flex justify-content-center mt-5">
-          <div className="col-11 col-md-8 col-lg-5">
-            <div className="row ms-3 pt-4">
-              <div className="col-5 ps-md-3 ps-0">
-                <hr />
-              </div>
-              <div className="col-1">
-                <p className="p mt-1 text-muted">
-                  <small>OR</small>
-                </p>
-              </div>
-              <div className="col-5 pe-md-3 pe-0">
-                <hr />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="container" style={{ minHeight: "100vh" }}>
         <form onSubmit={loginUser}>
           <div className="row d-flex justify-content-center my-4">
@@ -122,11 +101,6 @@ function Login() {
             </button>
           </div>
         </form>
-        <div className="p text-center pt-4 mb-5">
-          <small>
-            Don’t have an Account ? <Link to="/register">Sign Up</Link>
-          </small>
-        </div>
       </div>
     </div>
   );

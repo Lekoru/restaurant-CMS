@@ -3,9 +3,9 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { useSelector, useDispatch } from "react-redux";
-import MobileMenu from "../ui/MobileMenu";
+
 import { useEffect, useState } from "react";
-import Overlay from "../ui/Overlay";
+//import Overlay from "../ui/Overlay";
 import { setAuth } from "../redux/silces/authSlice";
 import { removeFromLocal } from "../helpers/storage";
 import { toggleMenu } from "../redux/silces/menuSlice";
@@ -14,17 +14,13 @@ import { toggleMenu } from "../redux/silces/menuSlice";
 function Header() {
   const authState = useSelector((state) => state.auth.auth);
   const dispatch = useDispatch();
-  const mMenu = useSelector((state) => state.menu.menu);
+  //const mMenu = useSelector((state) => state.menu.menu);
   const [secMenu, setSecMenu] = useState(false);
   let navigate = useNavigate();
   const location = useLocation();
 
-  const showMobileMenu = () => {
-    dispatch(toggleMenu(true));
-  };
-  const closeMobileMenu = () => {
-    dispatch(toggleMenu(false));
-  };
+ 
+
   const showSecMenu = () => {
     //show secondary  menu
     secMenu ? setSecMenu(false) : setSecMenu(true);
@@ -55,6 +51,17 @@ function Header() {
     return true;
   };
 
+  const notShowMenu = () => {
+    if (authState !== null) {
+      return false;
+    }
+    if (location.pathname === "/in-resturant" || location.pathname === "/login" ) {
+      return false;
+    }
+    return true;
+  };
+
+
   const logout = () => {
     dispatch(setAuth(null));
     removeFromLocal();
@@ -65,9 +72,7 @@ function Header() {
     showSecMenu();
   };
 
-  const closeMenu = () => {
-    dispatch(toggleMenu(false));
-  };
+
 
   useEffect(() => {
     window.onscroll = function () {
@@ -86,16 +91,7 @@ function Header() {
 
   return (
     <>
-      <>
-        <MobileMenu
-          toRest={toRest}
-          toLogin={toLogin}
-          toHome={goHome}
-          logout={logout}
-          closeMenu={closeMenu}
-        />
-        <Overlay width={`35%`} closeOverlay={closeMobileMenu} />
-      </>
+      
       <Navbar
         collapseOnSelect
         expand="lg"
@@ -105,46 +101,10 @@ function Header() {
         <Container fluid className="mx-md-5 mx-3">
           <Navbar.Brand className="cur-pointer" onClick={goHome}>
             <span id="logo-text" className="text-dark">
-             Restaurant-CMS
+             Pizza Plaza
             </span>
           </Navbar.Brand>
-          <span
-            className="d-block d-md-none text-dark"
-            style={{ zIndex: "3" }}
-            onClick={showMobileMenu}
-          >
-            {mMenu ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ width: "26px" }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ width: "25px" }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            )}
-          </span>
+          
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="#features"></Nav.Link>
@@ -217,6 +177,18 @@ function Header() {
                 </Nav.Link>
               )}
 
+              <>
+                {
+                    notShowMenu()  && (
+                    <Nav.Link onClick={toRest}>
+                      <span className="btn btn-n-small px-4 fw-bold">
+                        Menu
+                      </span>
+                    </Nav.Link> 
+                    )
+                }
+              </>
+              
               <>
                 {
                   notShowSignIn() && (

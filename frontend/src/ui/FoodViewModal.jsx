@@ -1,7 +1,7 @@
 import "./foodViewcss.css";
 function FoodViewModal({ closeModal }) {
-  const title = 'Pizza xD'
-  const description = 'Smaczna pizza.'
+  const title = 'Pizza'
+  const description = 'Tasty pizza.'
   const ingredients = ['cheese', 'ham', 'sauce', 'tomato']
   return (
     <>

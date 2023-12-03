@@ -18,19 +18,7 @@ function PopularDishes() {
                 <PopularDish key={index} item={item} />
               ))}
 
-              <div className="col-8 col-md-6 col-lg-3 mx-2 mx-md-5">
-                <div className="d-grid mt-5 pt-5 gap-2 col-12 mx-auto">
-                  <a
-                    className="btn border-0 br-theme py-2 bg-black text-white"
-                    type="button"
-                  >
-                    Popular dishes
-                  </a>
-                </div>
-                <div className="p text-center px-2 px-md-4 pt-2 text-capitalize">
-                  <small>Browse dishes from over 100 restaurants!</small>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>

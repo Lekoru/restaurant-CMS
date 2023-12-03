@@ -34,7 +34,6 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/in-resturant" element={<InResturant />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/vendor-dashboard" element={<Vendor />}>
           <Route index element={<VendorOrders />} />
           <Route path="menu" element={<VendorMenu />} />

@@ -10,11 +10,7 @@ function Footer() {
                 <div className="h5 fw-bold">
                   <small> Restaurant-CMS</small>
                 </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>About</small>{" "}
-                  </a>
-                </div>
+                
                 <div className="p pt-3">
                   <a className="footer-link">
                     <small>Contact Us</small>{" "}
@@ -30,51 +26,8 @@ function Footer() {
                     <small>Privacy Policy</small>
                   </a>
                 </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Register your Restaurant</small>
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Ride with us</small>
-                  </a>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="h5 fw-bold">
-                  <small>Popular Restaurants</small>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Woods by RoadRunners</small>
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Kada Fried Chicken</small>
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Domino’s Pizza</small>
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>CreamTown</small>
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>ColdStone</small>{" "}
-                  </a>
-                </div>
-                <div className="p pt-3">
-                  <a className="footer-link">
-                    <small>Kada Fried Chicken</small>
-                  </a>
-                </div>
+                
+                
               </div>
             </div>
           </div>
@@ -87,7 +40,7 @@ function Footer() {
                 </div>
                 <div className="p pt-3">
                   <a href="" className="footer-link">
-                    <small>Benin City</small>{" "}
+                    <small>Poznan </small>{" "}
                   </a>
                 </div>
               </div>

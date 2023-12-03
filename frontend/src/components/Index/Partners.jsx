@@ -13,10 +13,10 @@ function Partners() {
         <div className="row ">
           <div className="col-lg-3 mt-2 col-12 col-md-5 pt-md-5 pt-lg-3">
             <div className="font-boldest-second-biggest col-9 col-lg-12">
-              Our Partner Restaurants
+              Our Restaurant
             </div>
             <div className="fs-14 pt-3">
-              We have partnered with some of the best restaurants in your city
+              We are one of the best restaurants in your city
               to offer a wide variety of meals to suit your every mood!
             </div>
             {/*<!-- restaurant button web -->*/}
@@ -26,7 +26,7 @@ function Partners() {
                 className="btn w-100 d-none br-theme d-md-block py-3 px-4 text-white bg-black"
                 type="button"
               >
-                view resturants
+                View Menu
               </button>
             </div>
           </div>
@@ -40,58 +40,28 @@ function Partners() {
             <div className="carousel-inner">
               <div className="carousel-item active" data-bs-interval="3000">
                 <img
-                  src="images/partnered restaurants.png"
+                  src="images/restauracja1.jpg"
                   alt=""
-                  className="img-fluid"
+                  //className="img-fluid"
                 />
               </div>
               <div className="carousel-item" data-bs-interval="3000">
                 <img
-                  src="images/Property1=chicken republic.png"
-                  className="d-block w-100"
-                  alt="..."
+                  src="images/restauracja2.jpg"
+                  //className="d-block w-100"
+                  alt=""
                 />
               </div>
               <div className="carousel-item" data-bs-interval="3000">
                 <img
-                  src="images/Property1=dominos.png"
-                  className="d-block w-100"
-                  alt="..."
+                  src="images/restauracja3.jpg"
+                  //className="d-block w-100"
+                  alt=""
                 />
               </div>
             </div>
           </div>
 
-          {/*<!-- mobile screen carousel images -->*/}
-          <div
-            id="carouselExampleSlidesOnly  "
-            className="carousel slide d-lg-none col-lg-9 pt-3 col-md-7 col-12"
-            data-bs-ride="carousel"
-          >
-            <div className="carousel-inner">
-              <div className="carousel-item active" data-bs-interval="3000">
-                <img
-                  src="images/partnered_restaurants_mobile.png"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item" data-bs-interval="3000">
-                <img
-                  src="images/Property_dominos1=mobile (3).png"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item" data-bs-interval="3000">
-                <img
-                  src="images/Property_dominos1=mobile (2).png"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-            </div>
-          </div>
           {/*<!-- restaurant button -->*/}
           <div className=" col-12 d-md-none justify-content-center d-flex mt-3 pb-3 col-9">
             <a

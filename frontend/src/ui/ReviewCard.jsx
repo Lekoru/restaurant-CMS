@@ -8,7 +8,7 @@ function ReviewCard() {
           </span>
           <p className="card-text mb-5 mt-3" style={{ lineHeight: "20px" }}>
             <small>
-              Best food delivery app i have used in nigeria. Absolutly
+              Best food delivery app i have used in Poznan. Absolutly
               recommended and ill use it over and over agai! Awesome!
             </small>
           </p>

@@ -9,12 +9,7 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 import Index from "./views";
 import Login from "./views/Login";
-import Register from "./views/Register";
 import InResturant from "./views/InResturant";
-import Checkout from "./views/Checkout";
-import CheckoutDetails from "./components/Checkout/CheckoutDetails";
-import CheckoutAddress from "./components/Checkout/CheckoutAddress";
-import CheckoutReview from "./components/Checkout/CheckoutReview";
 import UserDashboard from "./views/UserDashboard";
 import UserProfile from "./components/UserDashboard/routes/UserProfile";
 import UserOrderHistory from "./components/UserDashboard/routes/UserOrderHistory";
@@ -27,13 +22,7 @@ ReactDOM.render(
           <Route path="/" element={<App />}>
             <Route index element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/in-resturant" element={<InResturant />} />
-            <Route path="/checkout" element={<Checkout />}>
-              <Route path="details" element={<CheckoutDetails />} />
-              <Route path="address" element={<CheckoutAddress />} />
-              <Route path="review" element={<CheckoutReview />} />
-            </Route>
             <Route path="/user-dashboard" element={<UserDashboard />}>
               <Route path="profile" element={<UserProfile />} />
               <Route path="history" element={<UserOrderHistory />} />
