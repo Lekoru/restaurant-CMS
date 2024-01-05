@@ -1,12 +1,12 @@
-var DataTypes = require("sequelize").DataTypes;
-var _menu = require("./menu");
-var _users = require("./users");
-var _websettings = require("./websettings");
+import {DataTypes} from "sequelize";
+import Menu from "./menu.js";
+import Users from "./users.js";
+import Websettings from "./websettings.js";
 
 function initModels(sequelize) {
-  var menu = _menu(sequelize, DataTypes);
-  var users = _users(sequelize, DataTypes);
-  var websettings = _websettings(sequelize, DataTypes);
+  const menu = Menu(sequelize, DataTypes);
+  const users = Users(sequelize, DataTypes);
+  const websettings = Websettings(sequelize, DataTypes);
 
 
   return {
@@ -15,6 +15,4 @@ function initModels(sequelize) {
     websettings,
   };
 }
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;
+export default initModels;
