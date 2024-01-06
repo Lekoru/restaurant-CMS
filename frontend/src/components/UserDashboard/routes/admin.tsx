@@ -87,7 +87,7 @@ function Admin() {
               <textarea
                 id="restaurantDescription"
                 className="form-control input-n-medium sign-up-form"
-                rows="8"
+                rows={8}
                 style={{ resize: 'none', width: '100%', height: '200px' }}
                 value={restaurantDescription}
                 onChange={(e) => setRestaurantDescription(e.target.value)}
