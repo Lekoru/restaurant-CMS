@@ -17,3 +17,20 @@ export function login(data: any) {
       });
   });
 }
+
+export function changePassword(data: { email: string , oldPassword: string, newPassword: string }) {
+  return new Promise((res, rej) => {
+    axios
+      .patch(backendHost + `changePassword`, {
+        email: data.email,
+        oldPassword: data.oldPassword,
+        newPassword: data.newPassword
+      })
+      .then((result) => {
+        res({ ...result.data });
+      })
+      .catch((err) => {
+        rej(err);
+      });
+  });
+}
