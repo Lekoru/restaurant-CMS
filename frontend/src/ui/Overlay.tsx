@@ -1,8 +1,17 @@
 import { useSelector } from "react-redux";
 import "animate.css";
+import React from "react";
 
-function Overlay({ closeOverlay, width }) {
-  const mMenu = useSelector((state) => state.menu.menu);
+interface mMenuProps {
+  name: string,
+  menu:{
+    initialState: {
+      menu: null,
+    },
+  }
+}
+function Overlay({ closeOverlay, width }: any) {
+  const mMenu = useSelector((state: mMenuProps) => state);
 
   return (
     <div

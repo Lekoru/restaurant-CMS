@@ -1,6 +1,6 @@
 import PopularDish from "../../ui/PopularDish";
+import React from "react";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
 function PopularDishes() {
   return (
     <section className="">

@@ -3,7 +3,7 @@ import axios from "axios";
 //const backendHost = "http://localhost:2000/api/";
 const backendHost = "https://em-back.herokuapp.com/api/";
 
-export function login(data) {
+export function login(data: any) {
   return new Promise((res, rej) => {
     axios
       .post(backendHost + "login", data)
@@ -16,7 +16,7 @@ export function login(data) {
   });
 }
 
-export function register(data) {
+export function register(data: any) {
   return new Promise((res, rej) => {
     axios
       .post(backendHost + "register", data)

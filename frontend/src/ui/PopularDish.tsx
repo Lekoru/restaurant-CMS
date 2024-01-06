@@ -1,4 +1,9 @@
-function PopularDish() {
+import React from "react";
+interface PopularDishProps {
+  item: number
+}
+
+const PopularDish = ({item} : PopularDishProps) => {
   return (
     <div className="col-7 col-md-4 col-lg-3 ">
       <div

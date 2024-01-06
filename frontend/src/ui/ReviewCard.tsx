@@ -1,4 +1,10 @@
-function ReviewCard() {
+import React from "react";
+interface ReviewCardProps {
+  item: number
+}
+
+const ReviewCard = ({item}: ReviewCardProps) => {
+
   return (
     <div className="col-7 col-md-4 col-lg-3">
       <div className="card border-2 border-r-5">

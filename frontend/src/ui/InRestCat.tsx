@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React from "react";
+
 function InRestCat() {
   return (
     <div className="col mt-2">

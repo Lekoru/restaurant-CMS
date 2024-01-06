@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import "./index.css";
 import "./index.scss";
 import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import reportWebVitals from "./reportWebVitals";
+// import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import Index from "./views";
@@ -13,7 +13,6 @@ import InResturant from "./views/InResturant";
 import UserDashboard from "./views/UserDashboard";
 import UserProfile from "./components/UserDashboard/routes/UserProfile";
 import UserOrderHistory from "./components/UserDashboard/routes/UserOrderHistory";
-import Admin from "./components/UserDashboard/routes/admin";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,7 +26,6 @@ ReactDOM.render(
             <Route path="/user-dashboard" element={<UserDashboard />}>
               <Route path="profile" element={<UserProfile />} />
               <Route path="history" element={<UserOrderHistory />} />
-              <Route path="admin" element={<Admin />} />
             </Route>
           </Route>
         </Routes>
@@ -37,5 +35,7 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-
-reportWebVitals();
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// reportWebVitals(console.log);

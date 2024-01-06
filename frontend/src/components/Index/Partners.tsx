@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
 function Partners() {
   let navigate = useNavigate();
 
@@ -65,6 +65,7 @@ function Partners() {
           {/*<!-- restaurant button -->*/}
           <div className=" col-12 d-md-none justify-content-center d-flex mt-3 pb-3 col-9">
             <a
+              href="replace"
               onClick={toRest}
               className="btn br-theme text-white w-100 py-3  bg-black"
               type="button"

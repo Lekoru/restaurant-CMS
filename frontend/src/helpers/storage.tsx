@@ -1,16 +1,17 @@
+
 export const loadFromLocal = () => {
   try {
-    const userInLocal = localStorage.getItem("emauth")
-      ? JSON.parse(localStorage.getItem("emauth"))
-      : null;
-    return userInLocal;
+    const storedValue = localStorage.getItem("emauth")
+
+    return storedValue? JSON.parse(storedValue) : null;
+
   } catch (e) {
     console.warn(e);
     return null;
   }
 };
 
-export const saveToLocal = (user) => {
+export const saveToLocal = (user: void) => {
   try {
     const serialisedState = JSON.stringify(user);
     localStorage.setItem("emauth", serialisedState);

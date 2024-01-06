@@ -4,15 +4,23 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 //import Overlay from "../ui/Overlay";
 import { setAuth } from "../redux/silces/authSlice";
 import { removeFromLocal } from "../helpers/storage";
 import { toggleMenu } from "../redux/silces/menuSlice";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
+interface authStateProps {
+  name: string,
+  auth:{
+    initialState: {
+      auth: null,
+    },
+  }
+}
+
 function Header() {
-  const authState = useSelector((state) => state.auth.auth);
+  const authState = useSelector((state: authStateProps) => state);
   const dispatch = useDispatch();
   //const mMenu = useSelector((state) => state.menu.menu);
   const [secMenu, setSecMenu] = useState(false);
@@ -42,23 +50,19 @@ function Header() {
   };
 
   const notShowSignIn = () => {
-    if (authState !== null) {
+    if (authState.auth.initialState && authState.auth.initialState.auth !== null) {
       return false;
     }
-    if (location.pathname === "/login" || location.pathname === "/register") {
-      return false;
-    }
-    return true;
+    return !(location.pathname === "/login" || location.pathname === "/register");
+
   };
 
   const notShowMenu = () => {
-    if (authState !== null) {
+    if (authState.auth.initialState && authState.auth.initialState.auth !== null) {
       return false;
     }
-    if (location.pathname === "/in-resturant" || location.pathname === "/login" ) {
-      return false;
-    }
-    return true;
+    return !(location.pathname === "/in-resturant" || location.pathname === "/login");
+
   };
 
 
@@ -75,23 +79,26 @@ function Header() {
 
 
   useEffect(() => {
+    let myFunction = () => {}
+    var header = document.getElementById("myHeader");
+    if(header){
+      var sticky = header.offsetTop;
+      myFunction = () => {
+        if (window.pageYOffset > sticky && header) {
+          header.classList.add("bg-white-native");
+        } else {
+          if(header) header.classList.remove("bg-white-native");
+        }
+      }
+    }
+
     window.onscroll = function () {
       myFunction();
     };
-    var header = document.getElementById("myHeader");
-    var sticky = header.offsetTop;
-    function myFunction() {
-      if (window.pageYOffset > sticky) {
-        header.classList.add("bg-white-native");
-      } else {
-        header.classList.remove("bg-white-native");
-      }
-    }
   }, []);
 
   return (
     <>
-      
       <Navbar
         collapseOnSelect
         expand="lg"
@@ -110,7 +117,7 @@ function Header() {
               <Nav.Link href="#features"></Nav.Link>
             </Nav>
             <Nav>
-              {authState && (
+              {authState.auth.initialState && authState.auth.initialState.auth && (
                 <Nav.Link className="mx-3" style={{ position: "relative" }}>
                   <span className="btn btn-n-small px-4" onClick={showSecMenu}>
                     <svg
