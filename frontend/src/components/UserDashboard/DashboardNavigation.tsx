@@ -11,6 +11,10 @@ function DashboardNavigation() {
   const toHistory = () => {
     navigate("/user-dashboard/history");
   };
+  const toAdmin = () => {
+    navigate("/user-dashboard/admin");
+  };
+
   return (
     <>
       <div style={{ backgroundColor: "#ffffff", height: "100vh" }}>
@@ -43,6 +47,37 @@ function DashboardNavigation() {
               </span>
             </span>
           </div>
+
+           {/*  ------------------------------------  Admin Link   ---------------------------------------------  */}
+      <div
+        className={`col-11 ps-0 br-tr-lb mt-3 ${
+          location.pathname === "/user-dashboard/admin" &&
+          "bg-theme br-left-only-dark"
+        }`}
+      >
+        <span
+          onClick={toAdmin}
+          className={`btn d-flex-align-center`}
+          style={{ height: "51px" }}
+        >
+          <span className="d-flex-align-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="svg-dash-icon py-auto"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="ps-2 fs-16">Admin</span>
+          </span>
+        </span>
+      </div>
+
           <div
             className={`col-11 ps-0 br-tr-lb mt-3 ${
               location.pathname === "/user-dashboard/history" &&
@@ -114,14 +149,7 @@ function DashboardNavigation() {
               <span className="ps-2 text-danger fs-16">Logout </span>
             </span>
           </div>
-          <div
-            className="col-11 fs-14"
-            style={{ position: "absolute", bottom: "5%" }}
-          >
-            <span className="text-97">About us</span> <br />
-            <span className="text-97">Terms & Conditions</span> <br />
-            <span className="text-97">Return Policy</span> <br />
-          </div>
+
         </div>
       </div>
     </>
