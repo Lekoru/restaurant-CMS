@@ -1,25 +1,14 @@
 import axios from "axios";
 
-//const backendHost = "http://localhost:2000/api/";
-const backendHost = "https://em-back.herokuapp.com/api/";
+const backendHost = "http://localhost:3001/api/";
 
 export function login(data: any) {
   return new Promise((res, rej) => {
     axios
-      .post(backendHost + "login", data)
-      .then((result) => {
-        res({ ...result.data, token: result.headers["x-auth-token"] });
+      .post(backendHost + `login`, {
+        email: data.email,
+        password: data.password
       })
-      .catch((err) => {
-        rej(err);
-      });
-  });
-}
-
-export function register(data: any) {
-  return new Promise((res, rej) => {
-    axios
-      .post(backendHost + "register", data)
       .then((result) => {
         res({ ...result.data, token: result.headers["x-auth-token"] });
       })
