@@ -1,5 +1,6 @@
 import "./foodViewcss.css";
-function FoodViewModal({ closeModal }) {
+import React from "react";
+function FoodViewModal({ closeModal }: any) {
   const title = 'Pizza'
   const description = 'Tasty pizza.'
   const ingredients = ['cheese', 'ham', 'sauce', 'tomato']
@@ -8,7 +9,7 @@ function FoodViewModal({ closeModal }) {
       <div
         className="modal"
         id="exampleModal"
-        tabIndex="-1"
+        tabIndex={-1}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
         style={{ display: "block" }}
@@ -54,7 +55,7 @@ function FoodViewModal({ closeModal }) {
                       {
                         ingredients.map((ingredient, index) => {
                           return (
-                            <div className="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div key={index} className="d-flex justify-content-between align-items-center border-bottom py-2">
                               <div>{ingredient}</div>
                             </div>
                           )

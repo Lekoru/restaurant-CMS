@@ -1,7 +1,8 @@
+
 import { Outlet } from "react-router-dom";
 import { useDispatch /*, useSelector*/ } from "react-redux";
 import { getAuth } from "./redux/silces/authSlice";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import Header from "./components/Header";
 //import Footer from "./components/Footer";

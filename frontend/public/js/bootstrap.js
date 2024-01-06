@@ -4,15 +4,20 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 (function (global, factory) {
-  typeof exports === "object" && typeof module !== "undefined"
-    ? (module.exports = factory(require("@popperjs/core")))
-    : typeof define === "function" && define.amd
-    ? define(["@popperjs/core"], factory)
-    : ((global =
-        typeof globalThis !== "undefined" ? globalThis : global || self),
-      (global.bootstrap = factory(global.Popper)));
+  /* global globalThis */
+  /* global define */
+  if (typeof exports === "object" && typeof module !== "undefined") {
+    module.exports = factory(require("@popperjs/core"));
+  } else if (typeof define === "function" && define.amd) {
+    define(["@popperjs/core"], factory);
+  } else {
+    // Handle global environment
+    // eslint-disable-next-line no-restricted-globals
+    global = typeof globalThis !== "undefined" ? globalThis : global || self;
+    global.bootstrap = factory(global.Popper);
+  }
 })(this, function (Popper) {
-  "use strict";
+  
 
   function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -122,7 +127,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.0.2): util/index.js
+   * Bootstrap (v5.0.2): util/index.tsx
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -545,7 +550,6 @@
             event.delegateTarget = target;
 
             if (handler.oneOff) {
-              // eslint-disable-next-line unicorn/consistent-destructuring
               EventHandler.off(element, event.type, selector, fn);
             }
 
@@ -5517,6 +5521,8 @@
         case "focusin":
         case "focusout":
           this._hasKeyboardInteraction = isInteracting;
+          break;
+        default:
           break;
       }
 

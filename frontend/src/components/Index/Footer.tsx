@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React from "react";
+
 function Footer() {
   return (
     <footer style={{ backgroundColor: "#f7f7f7" }}>

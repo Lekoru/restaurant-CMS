@@ -1,4 +1,5 @@
 import ReviewCard from "../../ui/ReviewCard";
+import React from "react";
 
 function Reviews() {
   return (
