@@ -7,21 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 //import Overlay from "../ui/Overlay";
 import { setAuth } from "../redux/silces/authSlice";
-import { removeFromLocal } from "../helpers/storage";
+import { loadFromLocal, removeFromLocal } from "../helpers/storage";
 import { toggleMenu } from "../redux/silces/menuSlice";
-
-interface authStateProps {
-  name: string,
-  auth:{
-    initialState: {
-      auth: null,
-    },
-  }
-}
+import { RootState } from "../redux/store";
 
 function Header() {
-  const authState = useSelector((state: authStateProps) => state);
+  const authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const userName = loadFromLocal()
   //const mMenu = useSelector((state) => state.menu.menu);
   const [secMenu, setSecMenu] = useState(false);
   let navigate = useNavigate();
@@ -50,7 +43,7 @@ function Header() {
   };
 
   const notShowSignIn = () => {
-    if (authState.auth.initialState && authState.auth.initialState.auth !== null) {
+    if (authState.auth !== null) {
       return false;
     }
     return !(location.pathname === "/login" || location.pathname === "/register");
@@ -58,7 +51,7 @@ function Header() {
   };
 
   const notShowMenu = () => {
-    if (authState.auth.initialState && authState.auth.initialState.auth !== null) {
+    if (authState.auth !== null) {
       return false;
     }
     return !(location.pathname === "/in-resturant" || location.pathname === "/login");
@@ -117,7 +110,7 @@ function Header() {
               <Nav.Link href="#features"></Nav.Link>
             </Nav>
             <Nav>
-              {authState.auth.initialState && authState.auth.initialState.auth && (
+              {authState.auth && (
                 <Nav.Link className="mx-3" style={{ position: "relative" }}>
                   <span className="btn btn-n-small px-4" onClick={showSecMenu}>
                     <svg
@@ -132,7 +125,7 @@ function Header() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    {authState.name}
+                    {(userName && userName.user.Name) || ""}
                   </span>
 
                   {/** secondary menu */}
