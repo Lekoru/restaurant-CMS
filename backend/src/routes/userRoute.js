@@ -86,20 +86,39 @@ router.patch("/changePassword", async (req, res) => {
   let user
     const transaction = await db.transaction()
     try {
-      if(!email) res.status(400).json({message: "Email not entered."})
-      user = await users.findOne({where: {Email: email}})
-      if(!user) res.status(400).json({message: "User doesn't exist."})
-      if (user.Password !== oldPassword) res.status(400).json({message: "Entered wrong old password."})
-      if(!oldPassword) res.status(400).json({message: "Old password not entered."})
-      if(!newPassword) res.status(400).json({message: "New password not entered."})
+      if (!oldPassword && !newPassword){
+        await transaction.rollback()
+        return res.status(400).json({error: "Invalid input. Please provide old password, and new password."})
+      }
+      if(!email) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Email not entered."})
+      }
+      user = await users.findOne({where: {Email: email}, transaction})
+      if(!user) {
+        await transaction.rollback()
+        return res.status(400).json({error: "User doesn't exist."})
+      }
+      if (user.Password !== oldPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Entered wrong old password."})
+      }
+      if(!oldPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Old password not entered."})
+      }
+      if(!newPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "New password not entered."})
+      }
 
       await user.update({Password: newPassword}, {transaction})
       await transaction.commit()
       res.status(200).json({message: "Password successfully changed."})
     } catch (e) {
-        await transaction.rollback()
-        console.error(e)
-        return res.status(500).json({error: e.message})
+      console.error(e)
+      await transaction.rollback()
+      return res.status(500).json({error: e.message})
     }
 })
 
