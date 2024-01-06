@@ -12,6 +12,7 @@ import Login from "./views/Login";
 import InResturant from "./views/InResturant";
 import UserDashboard from "./views/UserDashboard";
 import UserProfile from "./components/UserDashboard/routes/UserProfile";
+import UserAdmin from "./components/UserDashboard/routes/admin";
 import UserOrderHistory from "./components/UserDashboard/routes/UserOrderHistory";
 
 ReactDOM.render(
@@ -25,6 +26,7 @@ ReactDOM.render(
             <Route path="/in-resturant" element={<InResturant />} />
             <Route path="/user-dashboard" element={<UserDashboard />}>
               <Route path="profile" element={<UserProfile />} />
+              <Route path="adminPanel" element={<UserAdmin />} />
               <Route path="history" element={<UserOrderHistory />} />
             </Route>
           </Route>
