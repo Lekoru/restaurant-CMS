@@ -30,7 +30,7 @@ export function changePassword(data: { email: string , oldPassword: string, newP
         res({ ...result.data });
       })
       .catch((err) => {
-        rej(err);
+        rej(err.response.data.error);
       });
   });
 }
