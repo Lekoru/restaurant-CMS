@@ -4,6 +4,8 @@ import {Op} from "sequelize";
 import jwt from "jsonwebtoken";
 import securePassword from "secure-random-password";
 import bcrypt from "bcryptjs"
+import dotenv from 'dotenv'
+dotenv.config()
 
 const router = Router()
 const {users} = db.models
@@ -17,11 +19,16 @@ const hassPassword = async (password) => {
 const authenticateToken = async (req, res) => {
   const token = req.header('auth-token')
   if (!token) return res.json({ message: 'Token not found.' })
-  const verified = jwt.verify(token, process.env.JWT_SECRET)
-  if (!verified) return res.json({ message: 'Invalid token verification.' })
-  const _user = await users.findOne({ where: { user_id: verified.id }})
-  if (!_user) return res.status(400).json({ message: 'User doesn\'t exist' })
-  return _user
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET)
+    if (!verified) return res.json({ message: 'Invalid token verification.' })
+    const _user = await users.findOne({ where: { id: verified.id, Email: verified.email }})
+    if (!_user) return res.status(400).json({ message: 'User doesn\'t exist' })
+    return _user
+  } catch (e) {
+    console.error('JWT Verification Error:', e.message)
+    return res.status(401).json({message: 'Invalid token.'})
+  }
 }
 
 router.post("/createUser", async (req, res) => {
@@ -63,7 +70,7 @@ router.post("/login", async (req, res) => {
     if (!await bcrypt.compare(password, user.Password))
       return res.status(400).json({message: 'Invalid password.'})
 
-    const token = jwt.sign({id: user.Email}, process.env.JWT_SECRET)
+    const token = jwt.sign({id: user.id, Email: user.Email}, process.env.JWT_SECRET)
     return res.status(200).json({
       token,
       user: {
@@ -117,10 +124,6 @@ router.patch("/changePassword", async (req, res) => {
         await transaction.rollback()
         return res.status(400).json({error: "Invalid input. Please provide old password, and new password."})
       }
-      if(!user) {
-        await transaction.rollback()
-        return res.status(400).json({error: "User doesn't exist."})
-      }
 
       if(!oldPassword) {
         await transaction.rollback()
@@ -129,7 +132,7 @@ router.patch("/changePassword", async (req, res) => {
 
       if (!await bcrypt.compare(oldPassword, user.Password)) {
         await transaction.rollback()
-        return res.status(400).json({message: 'Invalid old password.'})
+        return res.status(400).json({error: 'Invalid old password.'})
       }
 
       if(!newPassword) {

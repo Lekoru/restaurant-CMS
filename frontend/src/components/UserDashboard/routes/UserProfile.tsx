@@ -14,7 +14,7 @@ function UserProfile() {
       setSuccessMessage(e.message)
     };
     const handleErrors = (e: any) => {
-      setErrorMessage(e)
+      setErrorMessage(e.response.data.error)
     };
 
     setErrorMessage('');
