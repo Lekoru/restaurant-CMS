@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import {changePassword} from "../../../helpers/web";
+import {loadFromLocal} from "../../../helpers/storage";
 
 function UserProfile() {
   const [oldPassword, setOldPassword] = useState('');
@@ -8,17 +10,29 @@ function UserProfile() {
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleSaveClick = () => {
+    const handleSuccess = (e: any) => {
+      setSuccessMessage(e.message)
+    };
+    const handleErrors = (e: any) => {
+      setErrorMessage(e)
+    };
 
+    setErrorMessage('');
+    setSuccessMessage('');
 
-      {/* ------------------------------------------------------------------------------------------- */}
-
+    const userData = loadFromLocal()
+    changePassword({email: userData.user.Email, oldPassword, newPassword})
+      .then((res) => {
+        handleSuccess(res);
+      })
+      .catch((err) => {
+        handleErrors(err);
+      });
 
     if (newPassword !== confirmNewPassword) {
       setErrorMessage('New password and confirm new password must match');
       setSuccessMessage('');
     } else {
-      setErrorMessage('');
-      setSuccessMessage('Password saved successfully!');
       setOldPassword('');
       setNewPassword('');
       setConfirmNewPassword('');

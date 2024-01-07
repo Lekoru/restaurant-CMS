@@ -1,5 +1,6 @@
 import {Router} from "express"
 import db from "../db.js"
+import {Op} from "sequelize";
 
 const router = Router()
 const {users} = db.models
@@ -31,7 +32,7 @@ try {
 }
 })
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const {email, password} = req.body
   let user;
   try {
@@ -81,21 +82,61 @@ router.delete("/deleteUser", async (req, res) => {
 })
 
 router.patch("/changePassword", async (req, res) => {
-    const {email, oldPassword, newPassword} = req.body
-    let user
+  const {email, oldPassword, newPassword} = req.body
+  let user
     const transaction = await db.transaction()
     try {
-        if(!email) res.status(400).json({message: "Email not entered."})
-        if(!oldPassword) res.status(400).json({message: "Old password not entered."})
-        if(!newPassword) res.status(400).json({message: "New password not entered."})
-
-        user = await users.findOne({where: {Email: email}})
-        if(!user) res.status(400).json({message: "User doesn't exist."})
-        user.Password = newPassword
-        user.update(transaction)
-        res.status(200).json({message: "Password successfully changed."})
-    } catch (e) {
+      if (!oldPassword && !newPassword){
         await transaction.rollback()
+        return res.status(400).json({error: "Invalid input. Please provide old password, and new password."})
+      }
+      if(!email) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Email not entered."})
+      }
+      user = await users.findOne({where: {Email: email}, transaction})
+      if(!user) {
+        await transaction.rollback()
+        return res.status(400).json({error: "User doesn't exist."})
+      }
+      if (user.Password !== oldPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Entered wrong old password."})
+      }
+      if(!oldPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "Old password not entered."})
+      }
+      if(!newPassword) {
+        await transaction.rollback()
+        return res.status(400).json({error: "New password not entered."})
+      }
+
+      await user.update({Password: newPassword}, {transaction})
+      await transaction.commit()
+      res.status(200).json({message: "Password successfully changed."})
+    } catch (e) {
+      console.error(e)
+      await transaction.rollback()
+      return res.status(500).json({error: e.message})
+    }
+})
+
+router.get("/getUsers", async (req, res) => {
+  const {email} = req.body
+    let user
+    try {
+      if(!email) res.status(400).json({message: "Email not entered."})
+      user = await users.findOne({where: {Email: email}})
+      if(!user) res.status(400).json({message: "User doesn't exist."})
+      if(user.Role !== "Admin") res.status(400).json({message: "You don't have permissions."})
+      const usersList = await users.findAll({where: {Email: {[Op.not]: email}}})
+      usersList.map((user) => {
+        user.Password = undefined
+        return user
+      })
+      res.status(200).json({usersList})
+    } catch (e) {
         console.error(e)
         return res.status(500).json({error: e.message})
     }

@@ -1,12 +1,14 @@
 import axios from "axios";
 
-//const backendHost = "http://localhost:2000/api/";
-const backendHost = "https://em-back.herokuapp.com/api/";
+const backendHost = "http://localhost:3001/api/";
 
 export function login(data: any) {
   return new Promise((res, rej) => {
     axios
-      .post(backendHost + "login", data)
+      .post(backendHost + `login`, {
+        email: data.email,
+        password: data.password
+      })
       .then((result) => {
         res({ ...result.data, token: result.headers["x-auth-token"] });
       })
@@ -16,15 +18,19 @@ export function login(data: any) {
   });
 }
 
-export function register(data: any) {
+export function changePassword(data: { email: string , oldPassword: string, newPassword: string }) {
   return new Promise((res, rej) => {
     axios
-      .post(backendHost + "register", data)
+      .patch(backendHost + `changePassword`, {
+        email: data.email,
+        oldPassword: data.oldPassword,
+        newPassword: data.newPassword
+      })
       .then((result) => {
-        res({ ...result.data, token: result.headers["x-auth-token"] });
+        res({ ...result.data });
       })
       .catch((err) => {
-        rej(err);
+        rej(err.response.data.error);
       });
   });
 }
