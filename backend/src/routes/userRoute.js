@@ -136,9 +136,30 @@ router.get("/getUsers", async (req, res) => {
         return user
       })
       res.status(200).json({usersList})
+router.patch("/genUserPassword", async (req, res) => {
+  const transaction = await db.transaction()
+  const {userToGenPass} = req.body
+  const user = await authenticateToken(req, res)
+  let userToGen
+    try {
+      if(user.Role !== "Admin") {
+        await transaction.rollback()
+        return res.status(400).json({message: "You don't have permissions."})
+      }
+      userToGen = await user.findOne({where: {Email: userToGenPass}, transaction})
+      if (!userToGen) {
+        await transaction.rollback()
+        return res.status(400).json({message: "User to change password doesn't exist."})
+      }
+      const randomPassword = securePassword.randomPassword({ length: 12 });
+
+      userToGen.update({Password: randomPassword}, transaction)
+      await transaction.commit()
+      res.status(200).json({})
     } catch (e) {
-        console.error(e)
-        return res.status(500).json({error: e.message})
+      await transaction.rollback()
+      console.error(e)
+      return res.status(500).json({error: e.message})
     }
 })
 
