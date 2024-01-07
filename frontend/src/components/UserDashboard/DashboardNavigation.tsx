@@ -16,6 +16,16 @@ function DashboardNavigation() {
     navigate("/user-dashboard/adminPanel");
   };
 
+  useEffect(() => {
+
+    const temp = loadFromLocal()
+    
+    if (!temp)
+    {
+      navigate("/");
+    }
+  }, [])
+
   return (
     <>
       <div style={{ backgroundColor: "#ffffff", height: "100vh" }}>
@@ -109,50 +119,6 @@ function DashboardNavigation() {
             <span className="ps-2  fs-16">Order history</span>
           </span>
         </div>
-
-        <div className="col-11">
-          <hr className="mt-4" />
-        </div>
-
-        {/*<div card border-0 shadow-n px-md-4 px-2 py-5 br-theme
-          className={`col-11 ps-0 br-tr-lb mt-3 ${
-            location.pathname === "/user-dashboard/order-history" &&
-            "bg-theme br-left-only-dark"
-          }`}
-        >
-          <span
-            className={`btn d-flex-align-center`}
-            style={{ height: "51px" }}
-          >
-            <img
-              src="/images/userprofile/vector.png"
-              className="img-fluid"
-              style={{ width: "20px" }}
-              alt=""
-            />
-            <span className="ps-2  fs-16">Back </span>
-          </span>
-        </div>*/}
-        <div
-          className={`col-11 ps-0 br-tr-lb  ${
-            location.pathname === "/user-dashboard/order-history" &&
-            "bg-theme br-left-only-dark"
-          }`}
-        >
-          <span
-            className={`btn d-flex-align-center`}
-            style={{ height: "51px" }}
-          >
-            <img
-              src="/images/userprofile/back.png"
-              className="img-fluid"
-              style={{ width: "20px" }}
-              alt=""
-            />
-            <span className="ps-2 text-danger fs-16">Logout </span>
-          </span>
-        </div>
-
         </div>
       </div>
     </>
