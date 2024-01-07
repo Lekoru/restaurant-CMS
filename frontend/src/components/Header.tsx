@@ -14,7 +14,7 @@ import { RootState } from "../redux/store";
 function Header() {
   const authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const userName = loadFromLocal()
+  const userName = loadFromLocal("emauth")
   //const mMenu = useSelector((state) => state.menu.menu);
   const [secMenu, setSecMenu] = useState(false);
   let navigate = useNavigate();

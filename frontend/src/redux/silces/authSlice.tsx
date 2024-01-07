@@ -16,13 +16,12 @@ export const authSlice = createSlice({
 export const { setAuth } = authSlice.actions;
 
 export const getAuth = () => async (dispatch: any) => {
-  const dataFromGet = await loadFromLocal();
+  const dataFromGet = await loadFromLocal("emauth");
   dispatch(setAuth(dataFromGet));
-  console.log("is getting auth");
 };
 
 export const saveAuthToLocal = () => (_dispatch: any, getState: any) => {
-  saveToLocal(getState().auth.auth);
+  saveToLocal(getState().auth.auth, "emauth");
 };
 
 export default authSlice.reducer;

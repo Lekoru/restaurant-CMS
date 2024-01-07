@@ -1,6 +1,8 @@
 import axios from "axios";
+import {loadFromLocal} from "./storage";
 
 const backendHost = "http://localhost:3001/api/";
+const localUserData = loadFromLocal("emauth")
 
 export function login(data: any) {
   return new Promise((res, rej) => {
@@ -10,7 +12,7 @@ export function login(data: any) {
         password: data.password
       })
       .then((result) => {
-        res({ ...result.data, token: result.headers["x-auth-token"] });
+        res({ ...result.data });
       })
       .catch((err) => {
         rej(err);
@@ -22,23 +24,38 @@ export function changePassword(data: { email: string , oldPassword: string, newP
   return new Promise((res, rej) => {
     axios
       .patch(backendHost + `changePassword`, {
-        email: data.email,
         oldPassword: data.oldPassword,
         newPassword: data.newPassword
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localUserData.token
+        }
       })
       .then((result) => {
         res({ ...result.data });
       })
       .catch((err) => {
-        rej(err.response.data.error);
+        rej(err);
       });
   });
 }
 
-export function get_users(data: any) {
+export async function get_users() {
+  const response = await axios
+  .get(backendHost + `getUsers`, {headers: {"auth-token": localUserData.token}})
+  return response.data
+};
+
+export function removeUser(userToDelete: string) {
+  console.log(userToDelete)
   return new Promise((res, rej) => {
     axios
-      .get(backendHost + `getUsers?email=${data.email}`)
+      .delete(backendHost + `deleteUser`,{
+        headers: {
+        "userToDelete": userToDelete,
+        "auth-token": localUserData.token
+      }})
       .then((result) => {
         res({ ...result.data });
       })

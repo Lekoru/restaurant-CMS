@@ -1,34 +1,30 @@
 import React, {useEffect, useState} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import {changePassword, get_users} from "../../../helpers/web";
+import { useNavigate } from "react-router-dom";
+import {changePassword, removeUser} from "../../../helpers/web";
 import {loadFromLocal} from "../../../helpers/storage";
-
+import {useDispatch} from "react-redux";
+import {getUsersList} from "../../../redux/silces/usersSlice";
+import { LiaExpeditedssl } from "react-icons/lia";
+import {MdDelete} from "react-icons/md";
 function UserProfile() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [userData, setUserData] = useState(loadFromLocal());
+  const [userData, setUserData] = useState(loadFromLocal("emauth"));
   const [usersData, setUsersData] = useState([]);
-  
-  const user_table = async () => {
-    const temp = await get_users({ email: userData.user.Email });
-    return temp ;
-  }
-  
-  //const [usersData, setUsersData] = useState(user_table());
-  //const userData = loadFromLocal()
-
 
   useEffect(() => {
-    const temp = loadFromLocal()
-    if (!temp)
-    {
-      navigate("/");
-    }
-  }, [])
+      dispatch(getUsersList())
+      let temp = loadFromLocal("emauth")
+      if (!temp) navigate("/");
+      setUserData(temp);
+      temp = loadFromLocal("usersList")
+      setUsersData(temp)
+    }, [navigate, dispatch]);
 
 
   const handleSaveClick = () => {
@@ -36,13 +32,13 @@ function UserProfile() {
       setSuccessMessage(e.message)
     };
     const handleErrors = (e: any) => {
-      setErrorMessage(e)
+      setErrorMessage(e.response.data.error)
     };
 
     setErrorMessage('');
     setSuccessMessage('');
 
-    const userData = loadFromLocal()
+    const userData = loadFromLocal("emauth")
     changePassword({email: userData.user.Email, oldPassword, newPassword})
       .then((res) => {
         handleSuccess(res);
@@ -51,7 +47,6 @@ function UserProfile() {
         handleErrors(err);
       });
 
-   
     if (newPassword !== confirmNewPassword) {
       setErrorMessage('New password and confirm new password must match');
       setSuccessMessage('');
@@ -62,8 +57,6 @@ function UserProfile() {
     }
   };
 
-
-console.log(usersData)
   return (
     <>
       <div className="row">
@@ -142,22 +135,24 @@ console.log(usersData)
           <th>ID</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Password</th>
           <th>Role</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-      {usersData.map((user:any,index:number) =>{
+      {usersData && usersData.map((user:any, index:number) =>{
         return(
           <tr key={ index}>
             <td>{ user.id}</td>
-            <td>{ user.name}</td>
-            <td>{ user.email}</td>
-            <td>{ user.password}</td>
-            <td>{ user.role}</td>
+            <td>{ user.Name}</td>
+            <td>{ user.Email}</td>
+            <td>{ user.Role}</td>
+            <td>{<LiaExpeditedssl size={30}/>}</td>
+            <td>{<MdDelete size={30} onClick={() => removeUser(user.Email)}/>}</td>
           </tr>
         )
-        
+
       }  )}
       </tbody>
     </table>
@@ -165,7 +160,6 @@ console.log(usersData)
 )}
         </div>
       </div>
-      
     </>
   );
 }
