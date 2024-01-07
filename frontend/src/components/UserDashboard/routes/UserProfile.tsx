@@ -8,6 +8,7 @@ import { LiaExpeditedssl } from "react-icons/lia";
 import {MdDelete} from "react-icons/md";
 function UserProfile() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -134,19 +135,21 @@ function UserProfile() {
           <th>ID</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Password</th>
           <th>Role</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-      {usersData.map((user:any,index:number) =>{
+      {usersData && usersData.map((user:any, index:number) =>{
         return(
           <tr key={ index}>
             <td>{ user.id}</td>
-            <td>{ user.name}</td>
-            <td>{ user.email}</td>
-            <td>{ user.password}</td>
-            <td>{ user.role}</td>
+            <td>{ user.Name}</td>
+            <td>{ user.Email}</td>
+            <td>{ user.Role}</td>
+            <td>{<LiaExpeditedssl size={30}/>}</td>
+            <td>{<MdDelete size={30} onClick={() => removeUser(user.Email)}/>}</td>
           </tr>
         )
 
