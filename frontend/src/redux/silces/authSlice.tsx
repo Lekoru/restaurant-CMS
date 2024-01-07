@@ -18,7 +18,6 @@ export const { setAuth } = authSlice.actions;
 export const getAuth = () => async (dispatch: any) => {
   const dataFromGet = await loadFromLocal();
   dispatch(setAuth(dataFromGet));
-  console.log("is getting auth");
 };
 
 export const saveAuthToLocal = () => (_dispatch: any, getState: any) => {

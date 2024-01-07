@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {loadFromLocal} from "../../helpers/storage";
 
 function DashboardNavigation() {
   let navigate = useNavigate();
   const location = useLocation();
-  const [userData, setUserData] = useState(loadFromLocal())
+  const userData = loadFromLocal("emauth")
+
   const toProfile = () => {
     navigate("/user-dashboard/profile");
   };

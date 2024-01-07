@@ -22,7 +22,8 @@ const authenticateToken = async (req, res) => {
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET)
     if (!verified) return res.json({ message: 'Invalid token verification.' })
-    const _user = await users.findOne({ where: { id: verified.id, Email: verified.email }})
+    const _user = await users.findOne({ where: { id: verified.id, Email: verified.Email }})
+
     if (!_user) return res.status(400).json({ message: 'User doesn\'t exist' })
     return _user
   } catch (e) {
@@ -88,7 +89,7 @@ router.post("/login", async (req, res) => {
 
 router.delete("/deleteUser", async (req, res) => {
   const transaction = await db.transaction()
-  const {userToDelete} = req.body
+  const userToDelete = req.header('userToDelete')
   try {
     let user = await authenticateToken(req, res)
     if (user.Role !== "Admin") {
@@ -150,6 +151,7 @@ router.patch("/changePassword", async (req, res) => {
       return res.status(500).json({error: e.message})
     }
 })
+
 router.get("/getUsers", async (req, res) => {
   const user = await authenticateToken(req, res)
   try {
@@ -184,7 +186,7 @@ router.patch("/genUserPassword", async (req, res) => {
 
       userToGen.update({Password: randomPassword}, transaction)
       await transaction.commit()
-      res.status(200).json({})
+      res.status(200).json({newPassword: randomPassword})
     } catch (e) {
       await transaction.rollback()
       console.error(e)

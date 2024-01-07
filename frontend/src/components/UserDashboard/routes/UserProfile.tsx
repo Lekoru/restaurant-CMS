@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {changePassword, get_users} from "../../../helpers/web";
+import { useNavigate } from "react-router-dom";
+import {changePassword, removeUser} from "../../../helpers/web";
 import {loadFromLocal} from "../../../helpers/storage";
-import {changePassword} from "../../../helpers/web";
-import {loadFromLocal} from "../../../helpers/storage";
-
+import {useDispatch} from "react-redux";
+import {getUsersList} from "../../../redux/silces/usersSlice";
+import { LiaExpeditedssl } from "react-icons/lia";
+import {MdDelete} from "react-icons/md";
 function UserProfile() {
   let navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState('');
@@ -15,22 +18,14 @@ function UserProfile() {
   const [userData, setUserData] = useState(loadFromLocal());
   const [usersData, setUsersData] = useState([]);
 
-  const user_table = async () => {
-    const temp = await get_users({ email: userData.user.Email });
-    return temp ;
-  }
-
-  //const [usersData, setUsersData] = useState(user_table());
-  //const userData = loadFromLocal()
-
-
   useEffect(() => {
-    const temp = loadFromLocal()
-    if (!temp)
-    {
-      navigate("/");
-    }
-  }, [])
+      dispatch(getUsersList())
+      let temp = loadFromLocal("emauth")
+      if (!temp) navigate("/");
+      setUserData(temp);
+      temp = loadFromLocal("usersList")
+      setUsersData(temp)
+    }, [navigate, dispatch]);
 
 
   const handleSaveClick = () => {
