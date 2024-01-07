@@ -62,6 +62,7 @@ function Header() {
   const logout = () => {
     dispatch(setAuth(null));
     removeFromLocal();
+    navigate("/");
   };
 
   const goToUserProfile = () => {

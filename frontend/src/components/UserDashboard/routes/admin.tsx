@@ -16,7 +16,7 @@ function Admin() {
     console.log('Main Description:', mainDescription);
     console.log('Restaurant Description:', restaurantDescription);
     
-    {/* ------------------------------------------------------------------------------------------- */}
+    {/* ------------------------------------------------------------------------------- */}
 
     setMainPhotoLink('');
     setMainTitle('');
