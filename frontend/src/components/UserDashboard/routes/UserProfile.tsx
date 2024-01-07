@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {changePassword, get_users} from "../../../helpers/web";
+import {loadFromLocal} from "../../../helpers/storage";
 import {changePassword} from "../../../helpers/web";
 import {loadFromLocal} from "../../../helpers/storage";
 
 function UserProfile() {
+  let navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [userData, setUserData] = useState(loadFromLocal());
+  const [usersData, setUsersData] = useState([]);
+
+  const user_table = async () => {
+    const temp = await get_users({ email: userData.user.Email });
+    return temp ;
+  }
+
+  //const [usersData, setUsersData] = useState(user_table());
+  //const userData = loadFromLocal()
+
+
+  useEffect(() => {
+    const temp = loadFromLocal()
+    if (!temp)
+    {
+      navigate("/");
+    }
+  }, [])
+
 
   const handleSaveClick = () => {
     const handleSuccess = (e: any) => {
@@ -104,6 +128,40 @@ function UserProfile() {
               </div>
             </div>
           </div>
+
+          {userData && userData.user.Role === "Admin" && (
+  <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white mt-4">
+    <div className="px-2 mb-4">
+      <span className="h4 fw-bold">Worker Table</span>
+    </div>
+
+    <table className="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+      {usersData.map((user:any,index:number) =>{
+        return(
+          <tr key={ index}>
+            <td>{ user.id}</td>
+            <td>{ user.name}</td>
+            <td>{ user.email}</td>
+            <td>{ user.password}</td>
+            <td>{ user.role}</td>
+          </tr>
+        )
+
+      }  )}
+      </tbody>
+    </table>
+  </div>
+)}
         </div>
       </div>
     </>

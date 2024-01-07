@@ -34,6 +34,20 @@ export function changePassword(data: { email: string , oldPassword: string, newP
       })
       .then((result) => {
         res({ ...result.data });
+        res({ ...result.data });
+      })
+      .catch((err) => {
+        rej(err);
+      });
+  });
+}
+
+export function get_users(data: any) {
+  return new Promise((res, rej) => {
+    axios
+      .get(backendHost + `getUsers?email=${data.email}`)
+      .then((result) => {
+        res({ ...result.data });
       })
       .catch((err) => {
         rej(err);
