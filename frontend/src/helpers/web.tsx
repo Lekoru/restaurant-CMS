@@ -2,7 +2,7 @@ import axios from "axios";
 import {loadFromLocal} from "./storage";
 
 const backendHost = "http://localhost:3001/api/";
-const localUserData = loadFromLocal()
+const localUserData = loadFromLocal("emauth")
 
 export function login(data: any) {
   return new Promise((res, rej) => {
@@ -33,7 +33,6 @@ export function changePassword(data: { email: string , oldPassword: string, newP
         }
       })
       .then((result) => {
-        res({ ...result.data });
         res({ ...result.data });
       })
       .catch((err) => {

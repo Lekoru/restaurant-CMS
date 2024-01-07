@@ -18,9 +18,9 @@ function DashboardNavigation() {
   };
 
   useEffect(() => {
-    const temp = loadFromLocal()
+    const temp = loadFromLocal("emauth")
     if (!temp) navigate("/");
-  }, [])
+  }, [navigate])
 
   return (
     <>

@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import {changePassword, get_users} from "../../../helpers/web";
 import { useNavigate } from "react-router-dom";
 import {changePassword, removeUser} from "../../../helpers/web";
 import {loadFromLocal} from "../../../helpers/storage";
@@ -15,7 +13,7 @@ function UserProfile() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [userData, setUserData] = useState(loadFromLocal());
+  const [userData, setUserData] = useState(loadFromLocal("emauth"));
   const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
@@ -39,7 +37,7 @@ function UserProfile() {
     setErrorMessage('');
     setSuccessMessage('');
 
-    const userData = loadFromLocal()
+    const userData = loadFromLocal("emauth")
     changePassword({email: userData.user.Email, oldPassword, newPassword})
       .then((res) => {
         handleSuccess(res);

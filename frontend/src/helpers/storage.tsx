@@ -1,7 +1,7 @@
 
-export const loadFromLocal = () => {
+export const loadFromLocal = (key: string) => {
   try {
-    const storedValue = localStorage.getItem("emauth")
+    const storedValue = localStorage.getItem(key)
 
     return storedValue? JSON.parse(storedValue) : null;
 
@@ -11,10 +11,10 @@ export const loadFromLocal = () => {
   }
 };
 
-export const saveToLocal = (user: void) => {
+export const saveToLocal = (data: void, key: string) => {
   try {
-    const serialisedState = JSON.stringify(user);
-    localStorage.setItem("emauth", serialisedState);
+    const serialisedState = JSON.stringify(data);
+    localStorage.setItem(key, serialisedState);
   } catch (e) {
     console.warn(e);
   }
