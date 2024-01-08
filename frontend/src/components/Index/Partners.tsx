@@ -4,6 +4,8 @@ import React from "react";
 function Partners() {
   let navigate = useNavigate();
 
+  const restaurant_desc = "We are one of the best restaurants in your city to offer a wide variety of meals to suit your every mood!"
+
   const toRest = () => {
     navigate("/in-resturant");
   };
@@ -16,8 +18,7 @@ function Partners() {
               Our Restaurant
             </div>
             <div className="fs-14 pt-3">
-              We are one of the best restaurants in your city
-              to offer a wide variety of meals to suit your every mood!
+             {restaurant_desc}
             </div>
             {/*<!-- restaurant button web -->*/}
             <div className="d-none d-md-block mt-3 pb-3 mt-lg-5">

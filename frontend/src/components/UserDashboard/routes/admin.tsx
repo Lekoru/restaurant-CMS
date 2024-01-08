@@ -8,6 +8,12 @@ function Admin() {
   const [restaurantDescription, setRestaurantDescription] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  const extractIdFromGoogleDriveLink = (link_photo: string) => {
+    const regex = /\/file\/d\/(.*?)\//;
+    const match = link_photo.match(regex);
+    return match ? match[1] : null;
+  };
+
  
   const handleSaveClick = () => {
 
@@ -15,7 +21,14 @@ function Admin() {
     console.log('Main Title:', mainTitle);
     console.log('Main Description:', mainDescription);
     console.log('Restaurant Description:', restaurantDescription);
-    
+    // Google Drive share link
+    const googleDriveShareLink = mainPhotoLink;
+
+    // Extract ID from Google Drive share link
+    const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink);
+
+    // Construct export link
+    const exportLink = fileId ? `https://drive.google.com/uc?export=view&id=${fileId}` : '';
     {/* ------------------------------------------------------------------------------- */}
 
     setMainPhotoLink('');
