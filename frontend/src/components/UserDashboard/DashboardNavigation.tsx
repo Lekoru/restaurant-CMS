@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, {useEffect} from "react";
 import {loadFromLocal} from "../../helpers/storage";
+import { DiGoogleAnalytics } from "react-icons/di";
+import { TiDropbox } from "react-icons/ti";
 
 function DashboardNavigation() {
   let navigate = useNavigate();
@@ -15,6 +17,9 @@ function DashboardNavigation() {
   };
   const toAdmin = () => {
     navigate("/user-dashboard/adminPanel");
+  };
+  const toMenu = () => {
+    navigate("/user-dashboard/menu_edit");
   };
 
   useEffect(() => {
@@ -69,23 +74,28 @@ function DashboardNavigation() {
               style={{ height: "51px" }}
             >
               <span className="d-flex-align-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="svg-dash-icon py-auto"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <DiGoogleAnalytics  />
                 <span className="ps-2 fs-16">Admin</span>
               </span>
             </span>
           </div>
         }
+         {/*  ------------------------------------  Menu Link   ---------------------------------------------  */}
+          <div
+            className={`col-11 ps-0 br-tr-lb mt-3 ${
+              location.pathname === "/user-dashboard/menu_edit" &&
+              "bg-theme br-left-only-dark"
+            }`}
+          >
+            <span
+              onClick={toMenu}
+              className={`btn d-flex-align-center`}
+              style={{ height: "51px" }}
+            >
+             <TiDropbox />
+                <span className="ps-2 fs-16">Edit Menu</span>
+              </span>
+          </div>
 
         <div
           className={`col-11 ps-0 br-tr-lb mt-3 ${
