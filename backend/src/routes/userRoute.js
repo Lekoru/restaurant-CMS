@@ -16,7 +16,7 @@ const hassPassword = async (password) => {
   return hashPass
 }
 
-const authenticateToken = async (req, res) => {
+export const authenticateToken = async (req, res) => {
   const token = req.header('auth-token')
   if (!token) return res.json({ message: 'Token not found.' })
   try {
