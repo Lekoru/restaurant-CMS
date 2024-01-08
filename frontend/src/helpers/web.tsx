@@ -48,7 +48,6 @@ export async function get_users() {
 };
 
 export function removeUser(userToDelete: string) {
-  console.log(userToDelete)
   return new Promise((res, rej) => {
     axios
       .delete(backendHost + `deleteUser`,{
@@ -63,4 +62,13 @@ export function removeUser(userToDelete: string) {
         rej(err);
       });
   });
+}
+
+export function getWebSettings () {
+  return new Promise((res, rej) => {
+    axios
+      .get(backendHost + 'getWebSettings')
+        .then((result) => res(result))
+        .catch((err) => { rej(err) })
+  })
 }
