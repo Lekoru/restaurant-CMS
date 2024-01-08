@@ -14,6 +14,7 @@ import UserDashboard from "./views/UserDashboard";
 import UserProfile from "./components/UserDashboard/routes/UserProfile";
 import UserAdmin from "./components/UserDashboard/routes/admin";
 import UserOrderHistory from "./components/UserDashboard/routes/UserOrderHistory";
+import EditMenu from "./components/UserDashboard/routes/menu_edit";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,6 +28,7 @@ ReactDOM.render(
             <Route path="/user-dashboard" element={<UserDashboard />}>
               <Route path="profile" element={<UserProfile />} />
               <Route path="adminPanel" element={<UserAdmin />} />
+              <Route path="menu_edit" element={<EditMenu />} />
               <Route path="history" element={<UserOrderHistory />} />
             </Route>
           </Route>
