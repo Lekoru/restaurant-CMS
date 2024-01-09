@@ -1,5 +1,5 @@
-import ReviewCard from "../../ui/ReviewCard";
-import React from "react";
+import ReviewCard from '../../ui/ReviewCard'
+import React from 'react'
 
 function Reviews() {
   return (
@@ -18,7 +18,7 @@ function Reviews() {
           <div className="col-12">
             <div
               className="row flex-nowrap no-scroll-bar"
-              style={{ overflowX: "scroll" }}
+              style={{ overflowX: 'scroll' }}
             >
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
                 <ReviewCard key={index} item={item} />
@@ -28,7 +28,7 @@ function Reviews() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-export default Reviews;
+export default Reviews

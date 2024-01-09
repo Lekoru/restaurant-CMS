@@ -1,46 +1,46 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import React, {useEffect} from "react";
-import {loadFromLocal} from "../../helpers/storage";
-import { DiGoogleAnalytics } from "react-icons/di";
-import { TiDropbox } from "react-icons/ti";
+import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { loadFromLocal } from '../../helpers/storage'
+import { DiGoogleAnalytics } from 'react-icons/di'
+import { TiDropbox } from 'react-icons/ti'
 
 function DashboardNavigation() {
-  let navigate = useNavigate();
-  const location = useLocation();
-  const userData = loadFromLocal("emauth")
+  let navigate = useNavigate()
+  const location = useLocation()
+  const userData = loadFromLocal('emauth')
 
   const toProfile = () => {
-    navigate("/user-dashboard/profile");
-  };
+    navigate('/user-dashboard/profile')
+  }
   const toHistory = () => {
-    navigate("/user-dashboard/history");
-  };
+    navigate('/user-dashboard/history')
+  }
   const toAdmin = () => {
-    navigate("/user-dashboard/adminPanel");
-  };
+    navigate('/user-dashboard/adminPanel')
+  }
   const toMenu = () => {
-    navigate("/user-dashboard/menu_edit");
-  };
+    navigate('/user-dashboard/menu_edit')
+  }
 
   useEffect(() => {
-    const temp = loadFromLocal("emauth")
-    if (!temp) navigate("/");
+    const temp = loadFromLocal('emauth')
+    if (!temp) navigate('/')
   }, [navigate])
 
   return (
     <>
-      <div style={{ backgroundColor: "#ffffff", height: "100vh" }}>
+      <div style={{ backgroundColor: '#ffffff', height: '100vh' }}>
         <div className="row pt-5 mt-5 px-2">
           <div
             className={`col-11 ps-0 br-tr-lb mt-5 ${
-              location.pathname === "/user-dashboard/profile" &&
-              "bg-theme br-left-only-dark"
+              location.pathname === '/user-dashboard/profile' &&
+              'bg-theme br-left-only-dark'
             }`}
           >
             <span
               onClick={toProfile}
               className={`btn d-flex-align-center`}
-              style={{ height: "51px" }}
+              style={{ height: '51px' }}
             >
               <span className="d-flex-align-center">
                 <svg
@@ -61,74 +61,74 @@ function DashboardNavigation() {
           </div>
 
           {/*  ------------------------------------  Admin Link   ---------------------------------------------  */}
-        {userData && userData.user.Role === "Admin" &&
-          <div
-            className={`col-11 ps-0 br-tr-lb mt-3 ${
-              location.pathname === "/user-dashboard/adminPanel" &&
-              "bg-theme br-left-only-dark"
-            }`}
-          >
-            <span
-              onClick={toAdmin}
-              className={`btn d-flex-align-center`}
-              style={{ height: "51px" }}
+          {userData && userData.user.Role === 'Admin' && (
+            <div
+              className={`col-11 ps-0 br-tr-lb mt-3 ${
+                location.pathname === '/user-dashboard/adminPanel' &&
+                'bg-theme br-left-only-dark'
+              }`}
             >
-              <span className="d-flex-align-center">
-              <DiGoogleAnalytics  />
-                <span className="ps-2 fs-16">Admin</span>
+              <span
+                onClick={toAdmin}
+                className={`btn d-flex-align-center`}
+                style={{ height: '51px' }}
+              >
+                <span className="d-flex-align-center">
+                  <DiGoogleAnalytics />
+                  <span className="ps-2 fs-16">Admin</span>
+                </span>
               </span>
-            </span>
-          </div>
-        }
-         {/*  ------------------------------------  Menu Link   ---------------------------------------------  */}
+            </div>
+          )}
+          {/*  ------------------------------------  Menu Link   ---------------------------------------------  */}
           <div
             className={`col-11 ps-0 br-tr-lb mt-3 ${
-              location.pathname === "/user-dashboard/menu_edit" &&
-              "bg-theme br-left-only-dark"
+              location.pathname === '/user-dashboard/menu_edit' &&
+              'bg-theme br-left-only-dark'
             }`}
           >
             <span
               onClick={toMenu}
               className={`btn d-flex-align-center`}
-              style={{ height: "51px" }}
+              style={{ height: '51px' }}
             >
-             <TiDropbox />
-                <span className="ps-2 fs-16">Edit Menu</span>
-              </span>
+              <TiDropbox />
+              <span className="ps-2 fs-16">Edit Menu</span>
+            </span>
           </div>
 
-        <div
-          className={`col-11 ps-0 br-tr-lb mt-3 ${
-            location.pathname === "/user-dashboard/history" &&
-            "bg-theme br-left-only-dark"
-          }`}
-        >
-          <span
-            onClick={toHistory}
-            className={`btn d-flex-align-center`}
-            style={{ height: "51px" }}
+          <div
+            className={`col-11 ps-0 br-tr-lb mt-3 ${
+              location.pathname === '/user-dashboard/history' &&
+              'bg-theme br-left-only-dark'
+            }`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="svg-dash-icon py-auto"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+            <span
+              onClick={toHistory}
+              className={`btn d-flex-align-center`}
+              style={{ height: '51px' }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-              />
-            </svg>
-            <span className="ps-2  fs-16">Order history</span>
-          </span>
-        </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="svg-dash-icon py-auto"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                />
+              </svg>
+              <span className="ps-2  fs-16">Order history</span>
+            </span>
+          </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default DashboardNavigation;
+export default DashboardNavigation

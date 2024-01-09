@@ -1,5 +1,5 @@
-import Meal from "../ui/Meal";
-import React from "react";
+import Meal from '../ui/Meal'
+import React from 'react'
 
 function InResturant() {
   return (
@@ -7,7 +7,7 @@ function InResturant() {
       <div
         className="container-fluid pt-5 text-theme pb-5 inrest-wrapper-image"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgb(0 0 0 / 60%), rgb(0 0 0 / 60%)),url("${"images/rest-wra.jpg"}")`,
+          backgroundImage: `linear-gradient(90deg, rgb(0 0 0 / 60%), rgb(0 0 0 / 60%)),url("${'images/rest-wra.jpg'}")`,
         }}
       >
         {/** intro text */}
@@ -15,9 +15,7 @@ function InResturant() {
         <div className="row px-md-5 mx-md-3">
           <div className="col-12 mt-4 px-4">
             <div className="h3 fw-bolder">Pizza Plaza</div>
-            <div className="p">
-              Italian cuisine, cocktails and wines
-            </div>
+            <div className="p">Italian cuisine, cocktails and wines</div>
           </div>
         </div>
 
@@ -45,7 +43,6 @@ function InResturant() {
       </div>
 
       <div className="container">
-
         {/** means */}
         <div className="row pt-3 px-2">
           {/** summer lunch  */}
@@ -60,7 +57,7 @@ function InResturant() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-export default InResturant;
+export default InResturant

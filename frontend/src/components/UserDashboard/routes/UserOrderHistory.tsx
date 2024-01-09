@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 function UserOrderHistory() {
   return (
-    <div className="row flex-nowrap" style={{ overflowX: "scroll" }}>
+    <div className="row flex-nowrap" style={{ overflowX: 'scroll' }}>
       <div className="col-12">
         <div className="">
           <table className="shadow-n bg-white br-theme table table-hover table-n ">
@@ -130,6 +130,6 @@ function UserOrderHistory() {
         </div>
       </div>
     </div>
-  );
+  )
 }
-export default UserOrderHistory;
+export default UserOrderHistory

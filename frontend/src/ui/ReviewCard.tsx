@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react'
 interface ReviewCardProps {
   item: number
 }
 
-const ReviewCard = ({item}: ReviewCardProps) => {
-
+const ReviewCard = ({ item }: ReviewCardProps) => {
   return (
     <div className="col-7 col-md-4 col-lg-3">
       <div className="card border-2 border-r-5">
@@ -12,7 +11,7 @@ const ReviewCard = ({item}: ReviewCardProps) => {
           <span className="card-title">
             <img src="images/textt.svg" alt="" />
           </span>
-          <p className="card-text mb-5 mt-3" style={{ lineHeight: "20px" }}>
+          <p className="card-text mb-5 mt-3" style={{ lineHeight: '20px' }}>
             <small>
               Best food delivery app i have used in Poznan. Absolutly
               recommended and ill use it over and over agai! Awesome!
@@ -32,7 +31,7 @@ const ReviewCard = ({item}: ReviewCardProps) => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ReviewCard;
+export default ReviewCard

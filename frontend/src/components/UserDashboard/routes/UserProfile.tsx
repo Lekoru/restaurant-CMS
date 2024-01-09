@@ -1,61 +1,60 @@
-import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import {changePassword, removeUser} from "../../../helpers/web";
-import {loadFromLocal} from "../../../helpers/storage";
-import {useDispatch} from "react-redux";
-import {getUsersList} from "../../../redux/silces/usersSlice";
-import { LiaExpeditedssl } from "react-icons/lia";
-import {MdDelete} from "react-icons/md";
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { changePassword, removeUser } from '../../../helpers/web'
+import { loadFromLocal } from '../../../helpers/storage'
+import { useDispatch } from 'react-redux'
+import { getUsersList } from '../../../redux/silces/usersSlice'
+import { LiaExpeditedssl } from 'react-icons/lia'
+import { MdDelete } from 'react-icons/md'
 function UserProfile() {
-  let navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [userData, setUserData] = useState(loadFromLocal("emauth"));
-  const [usersData, setUsersData] = useState([]);
+  let navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [userData, setUserData] = useState(loadFromLocal('emauth'))
+  const [usersData, setUsersData] = useState([])
 
   useEffect(() => {
-      dispatch(getUsersList())
-      let temp = loadFromLocal("emauth")
-      if (!temp) navigate("/");
-      setUserData(temp);
-      temp = loadFromLocal("usersList")
-      setUsersData(temp)
-    }, [navigate, dispatch]);
-
+    dispatch(getUsersList())
+    let temp = loadFromLocal('emauth')
+    if (!temp) navigate('/')
+    setUserData(temp)
+    temp = loadFromLocal('usersList')
+    setUsersData(temp)
+  }, [navigate, dispatch])
 
   const handleSaveClick = () => {
     const handleSuccess = (e: any) => {
       setSuccessMessage(e.message)
-    };
+    }
     const handleErrors = (e: any) => {
       setErrorMessage(e.response.data.error)
-    };
+    }
 
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage('')
+    setSuccessMessage('')
 
-    const userData = loadFromLocal("emauth")
-    changePassword({email: userData.user.Email, oldPassword, newPassword})
-      .then((res) => {
-        handleSuccess(res);
+    const userData = loadFromLocal('emauth')
+    changePassword({ email: userData.user.Email, oldPassword, newPassword })
+      .then(res => {
+        handleSuccess(res)
       })
-      .catch((err) => {
-        handleErrors(err);
-      });
+      .catch(err => {
+        handleErrors(err)
+      })
 
     if (newPassword !== confirmNewPassword) {
-      setErrorMessage('New password and confirm new password must match');
-      setSuccessMessage('');
+      setErrorMessage('New password and confirm new password must match')
+      setSuccessMessage('')
     } else {
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmNewPassword('');
+      setOldPassword('')
+      setNewPassword('')
+      setConfirmNewPassword('')
     }
-  };
+  }
 
   return (
     <>
@@ -75,31 +74,37 @@ function UserProfile() {
                     type="password"
                     className="form-control input-n-medium sign-up-form"
                     value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
+                    onChange={e => setOldPassword(e.target.value)}
                   />
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-4 mt-2 px-2">
-                  <label htmlFor="exampleInputPassword1" className="form-label fs-16">
+                  <label
+                    htmlFor="exampleInputPassword1"
+                    className="form-label fs-16"
+                  >
                     New password
                   </label>
                   <input
                     type="password"
                     className="form-control input-n-medium sign-up-form"
                     value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    onChange={e => setNewPassword(e.target.value)}
                   />
                 </div>
                 <div className="mb-4 mt-2 px-2">
-                  <label htmlFor="exampleInputPassword2" className="form-label fs-16">
+                  <label
+                    htmlFor="exampleInputPassword2"
+                    className="form-label fs-16"
+                  >
                     Confirm new password
                   </label>
                   <input
                     type="password"
                     className="form-control input-n-medium sign-up-form"
                     value={confirmNewPassword}
-                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    onChange={e => setConfirmNewPassword(e.target.value)}
                   />
                 </div>
                 <div className="row pt-4 mt-2 px-2">
@@ -123,45 +128,52 @@ function UserProfile() {
             </div>
           </div>
 
-          {userData && userData.user.Role === "Admin" && (
-  <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white mt-4">
-    <div className="px-2 mb-4">
-      <span className="h4 fw-bold">Worker Table</span>
-    </div>
+          {userData && userData.user.Role === 'Admin' && (
+            <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white mt-4">
+              <div className="px-2 mb-4">
+                <span className="h4 fw-bold">Worker Table</span>
+              </div>
 
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      {usersData && usersData.map((user:any, index:number) =>{
-        return(
-          <tr key={ index}>
-            <td>{ user.id}</td>
-            <td>{ user.Name}</td>
-            <td>{ user.Email}</td>
-            <td>{ user.Role}</td>
-            <td>{<LiaExpeditedssl size={30}/>}</td>
-            <td>{<MdDelete size={30} onClick={() => removeUser(user.Email)}/>}</td>
-          </tr>
-        )
-
-      }  )}
-      </tbody>
-    </table>
-  </div>
-)}
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usersData &&
+                    usersData.map((user: any, index: number) => {
+                      return (
+                        <tr key={index}>
+                          <td>{user.id}</td>
+                          <td>{user.Name}</td>
+                          <td>{user.Email}</td>
+                          <td>{user.Role}</td>
+                          <td>{<LiaExpeditedssl size={30} />}</td>
+                          <td>
+                            {
+                              <MdDelete
+                                size={30}
+                                onClick={() => removeUser(user.Email)}
+                              />
+                            }
+                          </td>
+                        </tr>
+                      )
+                    })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default UserProfile;
+export default UserProfile

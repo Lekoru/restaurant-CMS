@@ -1,13 +1,19 @@
-import { useNavigate } from "react-router-dom";
-import React from "react";
-import {webSettingsProps} from "../../views";
+import { useNavigate } from 'react-router-dom'
+import React from 'react'
+import { webSettingsProps } from '../../views'
 
-function Partners({loading, webSettings}:{loading: boolean, webSettings: webSettingsProps}) {
-  let navigate = useNavigate();
+function Partners({
+  loading,
+  webSettings,
+}: {
+  loading: boolean
+  webSettings: webSettingsProps
+}) {
+  let navigate = useNavigate()
 
   const toRest = () => {
-    navigate("/in-resturant");
-  };
+    navigate('/in-resturant')
+  }
   return (
     <section>
       <div className="container py-3 my-3">
@@ -17,7 +23,7 @@ function Partners({loading, webSettings}:{loading: boolean, webSettings: webSett
               Our Restaurant
             </div>
             <div className="fs-14 pt-3">
-             {loading ? webSettings.RestaurantDesc : ""}
+              {loading ? webSettings.RestaurantDesc : ''}
             </div>
             {/*<!-- restaurant button web -->*/}
             <div className="d-none d-md-block mt-3 pb-3 mt-lg-5">
@@ -76,7 +82,7 @@ function Partners({loading, webSettings}:{loading: boolean, webSettings: webSett
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-export default Partners;
+export default Partners

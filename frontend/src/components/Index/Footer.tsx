@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React from 'react'
 
 function Footer() {
   return (
-    <footer style={{ backgroundColor: "#f7f7f7" }}>
+    <footer style={{ backgroundColor: '#f7f7f7' }}>
       <div className="container mt-5 py-md-3 py-lg-5 py-3">
         <div className="row pt-5 px-md-3 pt-md-3 pb-3 ">
           <div className="col-lg-6">
@@ -12,10 +12,10 @@ function Footer() {
                 <div className="h5 fw-bold">
                   <small> Restaurant-CMS</small>
                 </div>
-                
+
                 <div className="p pt-3">
                   <a className="footer-link">
-                    <small>Contact Us</small>{" "}
+                    <small>Contact Us</small>{' '}
                   </a>
                 </div>
                 <div className="p pt-3">
@@ -28,8 +28,6 @@ function Footer() {
                     <small>Privacy Policy</small>
                   </a>
                 </div>
-                
-                
               </div>
             </div>
           </div>
@@ -42,7 +40,7 @@ function Footer() {
                 </div>
                 <div className="p pt-3">
                   <a href="" className="footer-link">
-                    <small>Poznan </small>{" "}
+                    <small>Poznan </small>{' '}
                   </a>
                 </div>
               </div>
@@ -110,7 +108,7 @@ function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

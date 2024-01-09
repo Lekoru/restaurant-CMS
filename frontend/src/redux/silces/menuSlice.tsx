@@ -1,17 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 export const menuSlice = createSlice({
-  name: "menu",
+  name: 'menu',
   initialState: {
     menu: false,
   },
   reducers: {
     toggleMenu: (state, action) => {
-      state.menu = action.payload;
+      state.menu = action.payload
     },
   },
-});
+})
 
-export const { toggleMenu } = menuSlice.actions;
+export const { toggleMenu } = menuSlice.actions
 
-export default menuSlice.reducer;
+export default menuSlice.reducer
