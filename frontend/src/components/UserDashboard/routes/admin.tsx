@@ -1,9 +1,9 @@
 import React, { useState} from "react";
 import {Dropdown} from "react-bootstrap";
 import {initWebSettings, webSettingsProps} from "../../../views";
-import {changeWebSettings} from "../../../helpers/web";
+import {changeWebSettings, createUser} from "../../../helpers/web";
 
-interface NewUserProps {
+export interface NewUserProps {
   Name: string,
   Email: string,
   Password: string,
@@ -14,12 +14,9 @@ const initNewUserConfig : NewUserProps = { Name: "", Email: "", Password: "", Ro
 
 function Admin() {
 
-  const [webSettings, setWebSettings] =
-    useState<webSettingsProps>(initWebSettings);
+  const [webSettings, setWebSettings] = useState<webSettingsProps>(initWebSettings);
   const [successMessage_web, setSuccessMessage_web] = useState('');
-
   const [newUserConfig, setNewUserConfig] = useState<NewUserProps>(initNewUserConfig);
-
   const [successMessage_user, setSuccessMessage_user] = useState('');
 
 
@@ -31,6 +28,7 @@ function Admin() {
 
  
   const handleSaveClick_add_user = () => {
+    createUser(newUserConfig).then()
     setNewUserConfig(initNewUserConfig)
     setSuccessMessage_user('Changes saved successfully!');
   };
