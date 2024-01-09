@@ -16,7 +16,7 @@ const hassPassword = async (password) => {
   return hashPass
 }
 
-const authenticateToken = async (req, res) => {
+export const authenticateToken = async (req, res) => {
   const token = req.header('auth-token')
   if (!token) return res.json({ message: 'Token not found.' })
   try {
@@ -33,7 +33,7 @@ const authenticateToken = async (req, res) => {
 }
 
 router.post("/createUser", async (req, res) => {
-const {name, email, pass, role} = req.body
+const {name, email, password, role} = req.body
 let user = await authenticateToken(req, res)
 try {
   if(user.Role !== "Admin") return res.status(400).json({message: "You don't have permission."})
@@ -41,10 +41,11 @@ try {
   if (user) return res.status(400).json({message: "User with this email already exist."})
   if(!name) return res.status(400).json({message: "Name not entered."})
   if(!email) return res.status(400).json({message: "Email not entered."})
-  if(!pass) return res.status(400).json({message: "Password not entered."})
+  if(!password) return res.status(400).json({message: "Password not entered."})
   if(!role) return res.status(400).json({message: "Role not entered."})
+  if(role !== "Admin" && role !== "User") return res.status(400).json({message: "Invalid role."})
 
-  const hashedPass = await hassPassword(pass)
+  const hashedPass = await hassPassword(password)
 
   const newUser = await users.create({
     Name: name,
@@ -53,7 +54,7 @@ try {
     Role: role
   })
 
-  return res.status(200).json(newUser)
+  return res.status(200).json({...newUser.dataValues, Password: undefined})
 } catch (e) {
   console.error(e)
   return res.status(500).json({error: e.message})
@@ -74,12 +75,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({id: user.id, Email: user.Email}, process.env.JWT_SECRET)
     return res.status(200).json({
       token,
-      user: {
-        id: user.id,
-        Name: user.Name,
-        Email: user.Email,
-        Role: user.Role
-      }
+      user: {...user.dataValues, Password: undefined}
     })
   } catch (e) {
     console.error(e)
