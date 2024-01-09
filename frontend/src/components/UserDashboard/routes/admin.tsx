@@ -1,17 +1,25 @@
 import React, { useState} from "react";
+import {Dropdown} from "react-bootstrap";
+import {initWebSettings, webSettingsProps} from "../../../views";
+import {changeWebSettings} from "../../../helpers/web";
+
+interface NewUserProps {
+  Name: string,
+  Email: string,
+  Password: string,
+  Role: "Admin" | "User"
+}
+
+const initNewUserConfig : NewUserProps = { Name: "", Email: "", Password: "", Role: "User" }
 
 function Admin() {
 
-  const [mainPhotoLink, setMainPhotoLink] = useState('');
-  const [mainTitle, setMainTitle] = useState('');
-  const [mainDescription, setMainDescription] = useState('');
-  const [restaurantDescription, setRestaurantDescription] = useState('');
+  const [webSettings, setWebSettings] =
+    useState<webSettingsProps>(initWebSettings);
   const [successMessage_web, setSuccessMessage_web] = useState('');
 
-  const [NewUserName, setNewUserName] = useState('');
-  const [NewUserEmail, setNewUserEmail] = useState('');
-  const [NewUserPasswd, setNewUserPasswd] = useState('');
-  const [NewUserRole, setNewUserRole] = useState('');
+  const [newUserConfig, setNewUserConfig] = useState<NewUserProps>(initNewUserConfig);
+
   const [successMessage_user, setSuccessMessage_user] = useState('');
 
 
@@ -23,28 +31,14 @@ function Admin() {
 
  
   const handleSaveClick_add_user = () => {
-
-    console.log('Main Photo Link:', NewUserName);
-    console.log('Main Title:', NewUserEmail);
-    console.log('Main Description:', NewUserPasswd);
-    console.log('Restaurant Description:', NewUserRole);
-   
-    setNewUserName('');
-    setNewUserEmail('');
-    setNewUserPasswd('');
-    setNewUserRole('');
+    setNewUserConfig(initNewUserConfig)
     setSuccessMessage_user('Changes saved successfully!');
   };
 
 
   const handleSaveClick_webPage = () => {
-
-    console.log('Main Photo Link:', mainPhotoLink);
-    console.log('Main Title:', mainTitle);
-    console.log('Main Description:', mainDescription);
-    console.log('Restaurant Description:', restaurantDescription);
     // Google Drive share link
-    const googleDriveShareLink = mainPhotoLink;
+    const googleDriveShareLink = webSettings.MainPhoto;
 
     // Extract ID from Google Drive share link
     const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink);
@@ -53,10 +47,9 @@ function Admin() {
     const exportLink = fileId ? `https://drive.google.com/uc?export=view&id=${fileId}` : '';
     {/* ------------------------------------------------------------------------------- */}
 
-    setMainPhotoLink('');
-    setMainTitle('');
-    setMainDescription('');
-    setRestaurantDescription('');
+    changeWebSettings({...webSettings, MainPhoto: exportLink}).then()
+
+    setWebSettings(initWebSettings)
     setSuccessMessage_web('Changes saved successfully!');
   };
 
@@ -78,8 +71,8 @@ function Admin() {
                 type="text"
                 id="mainPhotoLink"
                 className="form-control input-n-medium sign-up-form"
-                value={mainPhotoLink}
-                onChange={(e) => setMainPhotoLink(e.target.value)}
+                value={webSettings.MainPhoto}
+                onChange={(e) => setWebSettings({ ...webSettings, MainPhoto: e.target.value})}
               />
             </div>
 
@@ -92,8 +85,8 @@ function Admin() {
                 type="text"
                 id="mainTitle"
                 className="form-control input-n-medium sign-up-form"
-                value={mainTitle}
-                onChange={(e) => setMainTitle(e.target.value)}
+                value={webSettings.MainTitle}
+                onChange={(e) => setWebSettings({ ...webSettings, MainTitle: e.target.value})}
               />
             </div>
 
@@ -106,8 +99,8 @@ function Admin() {
                 type="text"
                 id="mainDescription"
                 className="form-control input-n-medium sign-up-form"
-                value={mainDescription}
-                onChange={(e) => setMainDescription(e.target.value)}
+                value={webSettings.MainDesc}
+                onChange={(e) => setWebSettings({ ...webSettings, MainDesc: e.target.value})}
               />
             </div>
 
@@ -124,8 +117,8 @@ function Admin() {
                 className="form-control input-n-medium sign-up-form"
                 rows={8}
                 style={{ resize: 'none', width: '100%', height: '200px' }}
-                value={restaurantDescription}
-                onChange={(e) => setRestaurantDescription(e.target.value)}
+                value={webSettings.RestaurantDesc}
+                onChange={(e) => setWebSettings({ ...webSettings, RestaurantDesc: e.target.value})}
               ></textarea>
             </div>
 
@@ -165,8 +158,8 @@ function Admin() {
                 type="text"
                 id="newusername"
                 className="form-control input-n-medium sign-up-form"
-                value={NewUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
+                value={newUserConfig.Name}
+                onChange={(e) => setNewUserConfig({...newUserConfig, Name: e.target.value})}
               />
             </div>
 
@@ -179,8 +172,8 @@ function Admin() {
                 type="text"
                 id="newuseremail"
                 className="form-control input-n-medium sign-up-form"
-                value={NewUserEmail}
-                onChange={(e) => setNewUserEmail(e.target.value)}
+                value={newUserConfig.Email}
+                onChange={(e) => setNewUserConfig({...newUserConfig, Email: e.target.value})}
               />
             </div>
 
@@ -193,8 +186,8 @@ function Admin() {
                 type="text"
                 id="newuserpasswd"
                 className="form-control input-n-medium sign-up-form"
-                value={NewUserPasswd}
-                onChange={(e) => setNewUserPasswd(e.target.value)}
+                value={newUserConfig.Password}
+                onChange={(e) => setNewUserConfig({...newUserConfig, Password: e.target.value})}
               />
             </div>
 
@@ -206,13 +199,16 @@ function Admin() {
               >
                 Role
               </label>
-              <input
-                type="text"
-                id="newuserrole"
-                className="form-control input-n-medium sign-up-form"
-                value={NewUserRole}
-                onChange={(e) => setNewUserRole(e.target.value)}
-              />
+              <Dropdown>
+                <Dropdown.Toggle variant={"secondary"}>
+                  {newUserConfig.Role}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => setNewUserConfig({...newUserConfig, Role: "User"})}>User</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setNewUserConfig({...newUserConfig, Role: "Admin"})}>Admin</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
             {/* Save button */}
             <div className="row pt-4 mt-2 px-2">
