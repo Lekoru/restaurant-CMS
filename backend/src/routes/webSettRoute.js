@@ -9,25 +9,25 @@ const {websettings} = db.models
 
 router.patch("/changeWebSettings", async (req, res) => {
   const transaction = await db.transaction()
-  const {mainPhotoLink, mainTitle, mainDesc, restDesc} = req.body
+  const {MainPhoto, MainTitle, MainDesc, RestaurantDesc} = req.body
   try {
-    const user = authenticateToken(req, res)
+    const user = await authenticateToken(req, res)
 
     if(user.Role !== "Admin") {
       await transaction.rollback()
       return res.status(400).json({message: "You don't have permissions."})
     }
-    if (!mainPhotoLink && !mainTitle && !mainDesc && !restDesc) {
+    if (!MainPhoto && !MainTitle && !MainDesc && !transaction) {
       await transaction.rollback()
       return res.status(400).json({message: "No data provided."})
     }
     const webSettings = await websettings.findOne({where: {id: 1}, transaction})
 
     webSettings.update({
-      MainPhoto: mainPhotoLink || webSettings.MainPhoto,
-      MainTitle: mainTitle || webSettings.MainTitle,
-      MainDesc: mainDesc || webSettings.MainDesc,
-      RestaurantDesc: restDesc || webSettings.RestaurantDesc
+      MainPhoto: MainPhoto || webSettings.MainPhoto,
+      MainTitle: MainTitle || webSettings.MainTitle,
+      MainDesc: MainDesc || webSettings.MainDesc,
+      RestaurantDesc: RestaurantDesc || webSettings.RestaurantDesc
     }, transaction)
     await transaction.commit()
     return res.status(200).json({webSettings})
