@@ -1,9 +1,11 @@
 import axios from "axios";
 import {loadFromLocal} from "./storage";
+import {webSettingsProps} from "../views";
 
 const backendHost = "http://localhost:3001/api/";
 const localUserData = loadFromLocal("emauth")
 
+{/*     User routes     */}
 export function login(data: any) {
   return new Promise((res, rej) => {
     axios
@@ -43,7 +45,11 @@ export function changePassword(data: { email: string , oldPassword: string, newP
 
 export async function get_users() {
   const response = await axios
-  .get(backendHost + `getUsers`, {headers: {"auth-token": localUserData.token}})
+  .get(backendHost + `getUsers`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': localUserData.token
+    }})
   return response.data
 };
 
@@ -64,6 +70,8 @@ export function removeUser(userToDelete: string) {
   });
 }
 
+{/*     Web Settings routes     */}
+
 export function getWebSettings () {
   return new Promise((res, rej) => {
     axios
@@ -72,3 +80,15 @@ export function getWebSettings () {
         .catch((err) => { rej(err) })
   })
 }
+export function changeWebSettings (webSettings: webSettingsProps) {
+  return new Promise((res, rej) => {
+    axios
+      .patch(backendHost + 'changeWebSettings', {...webSettings}, {headers:{
+          'Content-Type': 'application/json',
+          'auth-token': localUserData.token
+        }})
+        .then((result) => res(result))
+        .catch((err) => { rej(err) })
+  })
+}
+
