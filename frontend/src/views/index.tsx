@@ -12,11 +12,12 @@ export interface webSettingsProps {
   MainDesc: string,
   RestaurantDesc: string
 }
+export const initWebSettings : webSettingsProps = {MainPhoto: "", MainTitle: "", MainDesc: "", RestaurantDesc: ""}
+
 
 function Index() {
   const [loading, setLoading] = useState(false)
-  const [webSettings, setWebSettings] =
-    useState<webSettingsProps>({MainPhoto: "", MainTitle: "", MainDesc: "", RestaurantDesc: ""})
+  const [webSettings, setWebSettings] = useState<webSettingsProps>(initWebSettings)
 
   const fetchSettings = async () => {
     setLoading(false)
