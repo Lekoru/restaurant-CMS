@@ -16,31 +16,43 @@ const hashPassword = async password => {
   return await bcrypt.hash(password, salt)
 }
 
-export const authenticateToken = async (req, res) => {
+export const authenticateToken = async (req, res, transaction) => {
   const token = req.header('auth-token')
-  if (!token) return res.json({ message: 'Token not found.' })
+  if (!token) {
+    await transaction.rollback()
+    return res.json({ message: 'Token not found.' })
+  }
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET)
-    if (!verified) return res.json({ message: 'Invalid token verification.' })
+    if (!verified) {
+      await transaction.rollback()
+      return res.json({ message: 'Invalid token verification.' })
+    }
     const _user = await users.findOne({
       where: { id: verified.id, Email: verified.Email },
+      transaction,
     })
 
-    if (!_user) return res.status(400).json({ message: "User doesn't exist" })
+    if (!_user) {
+      await transaction.rollback()
+      return res.status(400).json({ message: "User doesn't exist" })
+    }
     return _user
   } catch (e) {
+    await transaction.rollback()
     console.error('JWT Verification Error:', e.message)
     return res.status(401).json({ message: 'Invalid token.' })
   }
 }
 
 router.post('/createUser', async (req, res) => {
+  const transaction = await db.transaction()
   const { Name, Email, Password, Role } = req.body
-  let user = await authenticateToken(req, res)
+  let user = await authenticateToken(req, res, transaction)
   try {
     if (user.Role !== 'Admin')
       return res.status(400).json({ message: "You don't have permission." })
-    user = await users.findOne({ where: { Email } })
+    user = await users.findOne({ where: { Email }, transaction })
     if (user)
       return res
         .status(400)
@@ -55,12 +67,15 @@ router.post('/createUser', async (req, res) => {
 
     const hashedPass = await hashPassword(Password)
 
-    const newUser = await users.create({
-      Name,
-      Email,
-      Password: hashedPass,
-      Role,
-    })
+    const newUser = await users.create(
+      {
+        Name,
+        Email,
+        Password: hashedPass,
+        Role,
+      },
+      { transaction },
+    )
 
     return res.status(200).json({ ...newUser.dataValues, Password: undefined })
   } catch (e) {
@@ -98,7 +113,7 @@ router.delete('/deleteUser', async (req, res) => {
   const transaction = await db.transaction()
   const userToDelete = req.header('userToDelete')
   try {
-    let user = await authenticateToken(req, res)
+    let user = await authenticateToken(req, res, transaction)
     if (user.Role !== 'Admin') {
       await transaction.rollback()
       return res.status(400).json({ message: "User don't have permission." })
@@ -127,7 +142,7 @@ router.patch('/changePassword', async (req, res) => {
   const transaction = await db.transaction()
   const { oldPassword, newPassword } = req.body
   try {
-    const user = await authenticateToken(req, res)
+    const user = await authenticateToken(req, res, transaction)
     if (!oldPassword && !newPassword) {
       await transaction.rollback()
       return res.status(400).json({
@@ -162,10 +177,13 @@ router.patch('/changePassword', async (req, res) => {
 })
 
 router.get('/getUsers', async (req, res) => {
-  const user = await authenticateToken(req, res)
+  const transaction = await db.transaction()
+  const user = await authenticateToken(req, res, transaction)
   try {
-    if (user.Role !== 'Admin')
-      res.status(400).json({ message: "You don't have permissions." })
+    if (user.Role !== 'Admin') {
+      await transaction.rollback()
+      return res.status(400).json({ message: "You don't have permissions." })
+    }
     const usersList = await users.findAll({
       where: { Email: { [Op.not]: user.Email } },
     })
@@ -173,16 +191,18 @@ router.get('/getUsers', async (req, res) => {
       user.Password = undefined
       return user
     })
+    await transaction.commit()
     res.status(200).json({ usersList })
   } catch (e) {
     console.error(e)
+    await transaction.rollback()
     return res.status(500).json({ error: e.message })
   }
 })
 router.patch('/genUserPassword', async (req, res) => {
   const transaction = await db.transaction()
   const { userToGenPass } = req.body
-  const user = await authenticateToken(req, res)
+  const user = await authenticateToken(req, res, transaction)
   let userToGen
   try {
     if (user.Role !== 'Admin') {
