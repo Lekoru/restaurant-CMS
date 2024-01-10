@@ -1,7 +1,7 @@
-import Meal from '../ui/Meal'
+import Meal from '../ui/Meal.tsx'
 import React from 'react'
 
-function InResturant() {
+function InRestaurant() {
   return (
     <section>
       <div
@@ -60,4 +60,4 @@ function InResturant() {
   )
 }
 
-export default InResturant
+export default InRestaurant

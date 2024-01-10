@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import DashboardNavigation from '../components/UserDashboard/DashboardNavigation'
+import DashboardNavigation from '../components/UserDashboard/DashboardNavigation.tsx'
 import React from 'react'
 
 function UserDashboard() {

@@ -1,4 +1,4 @@
-import ReviewCard from '../../ui/ReviewCard'
+import ReviewCard from '../../ui/ReviewCard.tsx'
 import React from 'react'
 
 function Reviews() {

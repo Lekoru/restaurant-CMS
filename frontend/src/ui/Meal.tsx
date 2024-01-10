@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import FoodViewModal from './FoodViewModal'
+import FoodViewModal from './FoodViewModal.tsx'
 
 function Meal() {
   const [isViewingItem, setIsViewItem] = useState(false)

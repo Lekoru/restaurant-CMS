@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
-import { changeWebSettings, createUser } from '../../../helpers/web'
+import { changeWebSettings, createUser } from '../../../helpers/web.tsx'
 import {
   initNewUserConfig,
   initWebSettings,
   NewUserProps,
   webSettingsProps,
-} from '../../../helpers/types'
+} from '../../../helpers/types.tsx'
 
 function Admin() {
   const [webSettings, setWebSettings] =

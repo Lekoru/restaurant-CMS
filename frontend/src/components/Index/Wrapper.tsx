@@ -1,5 +1,5 @@
 import React from 'react'
-import { webSettingsProps } from '../../views'
+import { webSettingsProps } from '../../helpers/types.tsx'
 
 function Wrapper({
   loading,

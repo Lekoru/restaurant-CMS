@@ -6,10 +6,10 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import React, { useEffect, useState } from 'react'
 //import Overlay from "../ui/Overlay";
-import { setAuth } from '../redux/silces/authSlice'
-import { loadFromLocal, removeFromLocal } from '../helpers/storage'
-import { toggleMenu } from '../redux/silces/menuSlice'
-import { RootState } from '../redux/store'
+import { setAuth } from '../redux/silces/authSlice.tsx'
+import { loadFromLocal, removeFromLocal } from '../helpers/storage.tsx'
+import { toggleMenu } from '../redux/silces/menuSlice.tsx'
+import { RootState } from '../redux/store.tsx'
 
 function Header() {
   const authState = useSelector((state: RootState) => state.auth)

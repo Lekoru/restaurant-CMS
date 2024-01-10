@@ -1,13 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import authReducer from './silces/authSlice'
-import userReducer from './silces/usersSlice'
-import menuReducer from './silces/menuSlice'
-import usersSlice from './silces/usersSlice'
+import authReducer from './silces/authSlice.tsx'
+import userReducer from './silces/usersSlice.tsx'
+import menuReducer from './silces/menuSlice.tsx'
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   menu: menuReducer,
-  users: usersSlice,
+  users: userReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

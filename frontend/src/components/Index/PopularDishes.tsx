@@ -1,4 +1,4 @@
-import PopularDish from '../../ui/PopularDish'
+import PopularDish from '../../ui/PopularDish.tsx'
 import React from 'react'
 
 function PopularDishes() {

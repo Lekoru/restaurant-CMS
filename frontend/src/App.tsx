@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { getAuth } from './redux/silces/authSlice'
+import { getAuth } from './redux/silces/authSlice.tsx'
 import React, { useEffect } from 'react'
 
-import Header from './components/Header'
+import Header from './components/Header.tsx'
 //import Footer from "./components/Footer";
 
 function App() {

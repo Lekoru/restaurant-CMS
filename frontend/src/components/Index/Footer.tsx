@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 
 function Footer() {
@@ -14,17 +13,17 @@ function Footer() {
                 </div>
 
                 <div className="p pt-3">
-                  <a className="footer-link">
+                  <a className="footer-link" href={'zamien'}>
                     <small>Contact Us</small>{' '}
                   </a>
                 </div>
                 <div className="p pt-3">
-                  <a className="footer-link">
+                  <a className="footer-link" href={'zamien'}>
                     <small>Terms & Conditions</small>
                   </a>
                 </div>
                 <div className="p pt-3">
-                  <a className="footer-link">
+                  <a className="footer-link" href={'zamien'}>
                     <small>Privacy Policy</small>
                   </a>
                 </div>
@@ -39,7 +38,7 @@ function Footer() {
                   Locations<small></small>
                 </div>
                 <div className="p pt-3">
-                  <a href="" className="footer-link">
+                  <a href={'zamien'} className="footer-link">
                     <small>Poznan </small>{' '}
                   </a>
                 </div>

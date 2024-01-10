@@ -1,11 +1,11 @@
-import Wrapper from '../components/Index/Wrapper'
-import PopularDishes from '../components/Index/PopularDishes'
-import Partners from '../components/Index/Partners'
-import Reviews from '../components/Index/Reviews'
-import Footer from '../components/Index/Footer'
+import Wrapper from '../components/Index/Wrapper.tsx'
+import PopularDishes from '../components/Index/PopularDishes.tsx'
+import Partners from '../components/Index/Partners.tsx'
+import Reviews from '../components/Index/Reviews.tsx'
+import Footer from '../components/Index/Footer.tsx'
 import React, { useEffect, useState } from 'react'
-import { getWebSettings } from '../helpers/web'
-import { initWebSettings, webSettingsProps } from '../helpers/types'
+import { getWebSettings } from '../helpers/web.tsx'
+import { initWebSettings, webSettingsProps } from '../helpers/types.tsx'
 
 function Index() {
   const [loading, setLoading] = useState(false)

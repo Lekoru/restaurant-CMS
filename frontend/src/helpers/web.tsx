@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { loadFromLocal } from './storage'
-import { NewUserProps, webSettingsProps } from './types'
+import { loadFromLocal } from './storage.tsx'
+import { NewUserProps, webSettingsProps } from './types.tsx'
 
 const backendHost = 'http://localhost:3001/api/'
 const localUserData = loadFromLocal('emauth')

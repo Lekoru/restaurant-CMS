@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { get_users } from '../../helpers/web'
-import { saveToLocal } from '../../helpers/storage'
-import { UserState } from '../../helpers/types'
+import { get_users } from '../../helpers/web.tsx'
+import { saveToLocal } from '../../helpers/storage.tsx'
+import { UserState } from '../../helpers/types.tsx'
 
 const initialState: UserState = {
   usersList: [],

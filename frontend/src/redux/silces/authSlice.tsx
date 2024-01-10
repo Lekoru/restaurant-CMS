@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadFromLocal, saveToLocal } from '../../helpers/storage'
+import { loadFromLocal, saveToLocal } from '../../helpers/storage.tsx'
 
 export const authSlice = createSlice({
   name: 'auth',

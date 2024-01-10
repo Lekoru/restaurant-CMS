@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect } from 'react'
-import { loadFromLocal } from '../../helpers/storage'
+import { loadFromLocal } from '../../helpers/storage.tsx'
 import { DiGoogleAnalytics } from 'react-icons/di'
 import { TiDropbox } from 'react-icons/ti'
 

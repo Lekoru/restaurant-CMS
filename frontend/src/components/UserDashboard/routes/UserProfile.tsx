@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { changePassword, removeUser } from '../../../helpers/web'
-import { loadFromLocal } from '../../../helpers/storage'
+import { changePassword, removeUser } from '../../../helpers/web.tsx'
+import { loadFromLocal } from '../../../helpers/storage.tsx'
 import { useDispatch } from 'react-redux'
-import { getUsersList } from '../../../redux/silces/usersSlice'
+import { getUsersList } from '../../../redux/silces/usersSlice.tsx'
 import { LiaExpeditedssl } from 'react-icons/lia'
 import { MdDelete } from 'react-icons/md'
 function UserProfile() {
@@ -37,8 +37,7 @@ function UserProfile() {
     setErrorMessage('')
     setSuccessMessage('')
 
-    const userData = loadFromLocal('emauth')
-    changePassword({ email: userData.user.Email, oldPassword, newPassword })
+    changePassword({ oldPassword, newPassword })
       .then(res => {
         handleSuccess(res)
       })
