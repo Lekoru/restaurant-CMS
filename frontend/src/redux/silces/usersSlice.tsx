@@ -1,17 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { get_users } from '../../helpers/web'
 import { saveToLocal } from '../../helpers/storage'
-
-export interface usersListConf {
-  id: number
-  Name: string
-  Email: String
-  Role: String
-}
-
-interface UserState {
-  usersList: usersListConf[]
-}
+import { UserState } from '../../helpers/types'
 
 const initialState: UserState = {
   usersList: [],

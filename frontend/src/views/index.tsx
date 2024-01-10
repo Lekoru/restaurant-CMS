@@ -5,19 +5,7 @@ import Reviews from '../components/Index/Reviews'
 import Footer from '../components/Index/Footer'
 import React, { useEffect, useState } from 'react'
 import { getWebSettings } from '../helpers/web'
-
-export interface webSettingsProps {
-  MainPhoto: string
-  MainTitle: string
-  MainDesc: string
-  RestaurantDesc: string
-}
-export const initWebSettings: webSettingsProps = {
-  MainPhoto: '',
-  MainTitle: '',
-  MainDesc: '',
-  RestaurantDesc: '',
-}
+import { initWebSettings, webSettingsProps } from '../helpers/types'
 
 function Index() {
   const [loading, setLoading] = useState(false)

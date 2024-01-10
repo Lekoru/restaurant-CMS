@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
-import { initWebSettings, webSettingsProps } from '../../../views'
 import { changeWebSettings, createUser } from '../../../helpers/web'
-
-export interface NewUserProps {
-  Name: string
-  Email: string
-  Password: string
-  Role: 'Admin' | 'User'
-}
-
-const initNewUserConfig: NewUserProps = {
-  Name: '',
-  Email: '',
-  Password: '',
-  Role: 'User',
-}
+import {
+  initNewUserConfig,
+  initWebSettings,
+  NewUserProps,
+  webSettingsProps,
+} from '../../../helpers/types'
 
 function Admin() {
   const [webSettings, setWebSettings] =
