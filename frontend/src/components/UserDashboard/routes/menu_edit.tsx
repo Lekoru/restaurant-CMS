@@ -13,6 +13,12 @@ function Admin() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [DishName, setDishName] = useState('')
+  const [dishDescription, setDishDescription] = useState('')
+  const [ingredientsList, setIngredientsList] = useState('')
+  const [photoLink, setPhotoLink] = useState('')
+  const [cost, setCost] = useState('')
+
   const [, setUserData] = useState(loadFromLocal('emauth'))
   const [usersData, setUsersData] = useState([])
   const [showModal, setShowModal] = useState(false)
@@ -47,28 +53,36 @@ function Admin() {
     setDishData(prevData => ({ ...prevData, [name]: value }))
   }
 
-  const handleSaveClick = () => {
-    // Access the dish data using dishData
+  const handleSaveClick1 = () => {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    setDishName('');
+    setDishDescription('');
+    setIngredientsList('');
+    setPhotoLink('');
+    setCost('');
+
+  };
+
+  const handleSaveClick2 = () => {
+
     console.log('Dish Data:', dishData)
 
-    // Save the dish data to a variable
+
     setSavedDishData(prevData => ({
       ...prevData,
       ...dishData,
       googleDriveShareLink: dishData.photoLink,
     }))
 
-    const googleDriveShareLink = dishData.photoLink // Use photoLink as googleDriveShareLink
+    const googleDriveShareLink = dishData.photoLink
 
-    // Extract ID from Google Drive share link
     const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
 
-    // Construct export link
     const exportLink = fileId
       ? `https://drive.google.com/uc?export=view&id=${fileId}`
       : ''
 
-    // Save exportLink to savedDishData
     setSavedDishData(prevData => ({
       ...prevData,
       exportLink: exportLink,
@@ -89,6 +103,86 @@ function Admin() {
 
   return (
     <>
+      <div className="row">
+        <div className="col-12 col-md-10">
+          <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white">
+            <div className="px-2 mb-4">
+              <span className="h4 fw-bold">Add new menu</span>
+            </div>
+            <div className="row">
+              <div className="col-12 col-md-6">
+                <div className="mb-4 px-2">
+                  <label htmlFor="dishname" className="form-label fs-16">
+                    Dish Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control input-n-medium sign-up-form"
+                    value={DishName}
+                    onChange={e => setDishName(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4 px-2">
+                  <label htmlFor="dishDescription" className="form-label fs-16">
+                    Dish Description
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control input-n-medium sign-up-form"
+                    value={dishDescription}
+                    onChange={e => setDishDescription(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4 px-2">
+                  <label htmlFor="ingredientsList" className="form-label fs-16">
+                    Ingredients List
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control input-n-medium sign-up-form"
+                    value={ingredientsList}
+                    onChange={e => setIngredientsList(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4 px-2">
+                  <label htmlFor="photoLink" className="form-label fs-16">
+                    Photo Link
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control input-n-medium sign-up-form"
+                    value={photoLink}
+                    onChange={e => setPhotoLink(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4 px-2">
+                  <label htmlFor="cost" className="form-label fs-16">
+                    Cost
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control input-n-medium sign-up-form"
+                    value={cost}
+                    onChange={e => setCost(e.target.value)}
+                  />
+                </div>
+                <div className="row pt-4 mt-2 px-2">
+                  <div className="col-12">
+                    <button
+                      className="w-100 py-3 br-theme bg-dark text-white border-0"
+                      type="button"
+                      onClick={handleSaveClick1}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div className="mt-4"></div>
       <div className="row">
         <div className="col-12 col-md-10">
           <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white">
@@ -184,7 +278,7 @@ function Admin() {
                 <Button variant="secondary" onClick={handleCloseModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleSaveClick}>
+                <Button variant="primary" onClick={handleSaveClick2}>
                   Save Changes
                 </Button>
               </Modal.Footer>
