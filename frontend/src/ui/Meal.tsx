@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import FoodViewModal from "./FoodViewModal";
+import React, { useState } from 'react'
+import FoodViewModal from './FoodViewModal.tsx'
 
 function Meal() {
-  const [isViewingItem, setIsViewItem] = useState(false);
+  const [isViewingItem, setIsViewItem] = useState(false)
   const showMealDetail = () => {
-    setIsViewItem(true);
-  };
+    setIsViewItem(true)
+  }
   const closeModal = () => {
-    setIsViewItem(false);
-  };
+    setIsViewItem(false)
+  }
   return (
     <>
       {isViewingItem && <FoodViewModal closeModal={closeModal} />}
@@ -34,7 +34,7 @@ function Meal() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Meal;
+export default Meal

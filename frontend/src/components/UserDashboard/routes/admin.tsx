@@ -1,55 +1,53 @@
-import React, { useState} from "react";
-import {Dropdown} from "react-bootstrap";
-import {initWebSettings, webSettingsProps} from "../../../views";
-import {changeWebSettings, createUser} from "../../../helpers/web";
-
-export interface NewUserProps {
-  Name: string,
-  Email: string,
-  Password: string,
-  Role: "Admin" | "User"
-}
-
-const initNewUserConfig : NewUserProps = { Name: "", Email: "", Password: "", Role: "User" }
+import React, { useState } from 'react'
+import { Dropdown } from 'react-bootstrap'
+import { changeWebSettings, createUser } from '../../../helpers/web.tsx'
+import {
+  initNewUserConfig,
+  initWebSettings,
+  NewUserProps,
+  webSettingsProps,
+} from '../../../helpers/types.tsx'
 
 function Admin() {
-
-  const [webSettings, setWebSettings] = useState<webSettingsProps>(initWebSettings);
-  const [successMessage_web, setSuccessMessage_web] = useState('');
-  const [newUserConfig, setNewUserConfig] = useState<NewUserProps>(initNewUserConfig);
-  const [successMessage_user, setSuccessMessage_user] = useState('');
-
+  const [webSettings, setWebSettings] =
+    useState<webSettingsProps>(initWebSettings)
+  const [successMessage_web, setSuccessMessage_web] = useState('')
+  const [newUserConfig, setNewUserConfig] =
+    useState<NewUserProps>(initNewUserConfig)
+  const [successMessage_user, setSuccessMessage_user] = useState('')
 
   const extractIdFromGoogleDriveLink = (link_photo: string) => {
-    const regex = /\/file\/d\/(.*?)\//;
-    const match = link_photo.match(regex);
-    return match ? match[1] : null;
-  };
+    const regex = /\/file\/d\/(.*?)\//
+    const match = link_photo.match(regex)
+    return match ? match[1] : null
+  }
 
- 
   const handleSaveClick_add_user = () => {
     createUser(newUserConfig).then()
     setNewUserConfig(initNewUserConfig)
-    setSuccessMessage_user('Changes saved successfully!');
-  };
-
+    setSuccessMessage_user('Changes saved successfully!')
+  }
 
   const handleSaveClick_webPage = () => {
     // Google Drive share link
-    const googleDriveShareLink = webSettings.MainPhoto;
+    const googleDriveShareLink = webSettings.MainPhoto
 
     // Extract ID from Google Drive share link
-    const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink);
+    const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
 
     // Construct export link
-    const exportLink = fileId ? `https://drive.google.com/uc?export=view&id=${fileId}` : '';
-    {/* ------------------------------------------------------------------------------- */}
+    const exportLink = fileId
+      ? `https://drive.google.com/uc?export=view&id=${fileId}`
+      : ''
+    {
+      /* ------------------------------------------------------------------------------- */
+    }
 
-    changeWebSettings({...webSettings, MainPhoto: exportLink}).then()
+    changeWebSettings({ ...webSettings, MainPhoto: exportLink }).then()
 
     setWebSettings(initWebSettings)
-    setSuccessMessage_web('Changes saved successfully!');
-  };
+    setSuccessMessage_web('Changes saved successfully!')
+  }
 
   return (
     <>
@@ -70,7 +68,9 @@ function Admin() {
                 id="mainPhotoLink"
                 className="form-control input-n-medium sign-up-form"
                 value={webSettings.MainPhoto}
-                onChange={(e) => setWebSettings({ ...webSettings, MainPhoto: e.target.value})}
+                onChange={e =>
+                  setWebSettings({ ...webSettings, MainPhoto: e.target.value })
+                }
               />
             </div>
 
@@ -84,7 +84,9 @@ function Admin() {
                 id="mainTitle"
                 className="form-control input-n-medium sign-up-form"
                 value={webSettings.MainTitle}
-                onChange={(e) => setWebSettings({ ...webSettings, MainTitle: e.target.value})}
+                onChange={e =>
+                  setWebSettings({ ...webSettings, MainTitle: e.target.value })
+                }
               />
             </div>
 
@@ -98,7 +100,9 @@ function Admin() {
                 id="mainDescription"
                 className="form-control input-n-medium sign-up-form"
                 value={webSettings.MainDesc}
-                onChange={(e) => setWebSettings({ ...webSettings, MainDesc: e.target.value})}
+                onChange={e =>
+                  setWebSettings({ ...webSettings, MainDesc: e.target.value })
+                }
               />
             </div>
 
@@ -116,7 +120,12 @@ function Admin() {
                 rows={8}
                 style={{ resize: 'none', width: '100%', height: '200px' }}
                 value={webSettings.RestaurantDesc}
-                onChange={(e) => setWebSettings({ ...webSettings, RestaurantDesc: e.target.value})}
+                onChange={e =>
+                  setWebSettings({
+                    ...webSettings,
+                    RestaurantDesc: e.target.value,
+                  })
+                }
               ></textarea>
             </div>
 
@@ -133,13 +142,13 @@ function Admin() {
               </div>
             </div>
             {successMessage_web && (
-                  <div className="text-success mt-2">{successMessage_web}</div>
-                )}
+              <div className="text-success mt-2">{successMessage_web}</div>
+            )}
           </div>
         </div>
       </div>
 
-    {/*----------------------------------------------------------------- Add User ----------------------------------------------------------------------------*/ }
+      {/*----------------------------------------------------------------- Add User ----------------------------------------------------------------------------*/}
       <div className="row mb-4">
         <div className="col-12 col-md-10">
           <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white">
@@ -157,7 +166,9 @@ function Admin() {
                 id="newusername"
                 className="form-control input-n-medium sign-up-form"
                 value={newUserConfig.Name}
-                onChange={(e) => setNewUserConfig({...newUserConfig, Name: e.target.value})}
+                onChange={e =>
+                  setNewUserConfig({ ...newUserConfig, Name: e.target.value })
+                }
               />
             </div>
 
@@ -171,7 +182,9 @@ function Admin() {
                 id="newuseremail"
                 className="form-control input-n-medium sign-up-form"
                 value={newUserConfig.Email}
-                onChange={(e) => setNewUserConfig({...newUserConfig, Email: e.target.value})}
+                onChange={e =>
+                  setNewUserConfig({ ...newUserConfig, Email: e.target.value })
+                }
               />
             </div>
 
@@ -185,26 +198,40 @@ function Admin() {
                 id="newuserpasswd"
                 className="form-control input-n-medium sign-up-form"
                 value={newUserConfig.Password}
-                onChange={(e) => setNewUserConfig({...newUserConfig, Password: e.target.value})}
+                onChange={e =>
+                  setNewUserConfig({
+                    ...newUserConfig,
+                    Password: e.target.value,
+                  })
+                }
               />
             </div>
 
             {/* Role */}
             <div className="mb-4 mt-2 px-2">
-              <label
-                htmlFor="newuserrole"
-                className="form-label fs-16"
-              >
+              <label htmlFor="newuserrole" className="form-label fs-16">
                 Role
               </label>
               <Dropdown>
-                <Dropdown.Toggle variant={"secondary"}>
+                <Dropdown.Toggle variant={'secondary'}>
                   {newUserConfig.Role}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => setNewUserConfig({...newUserConfig, Role: "User"})}>User</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setNewUserConfig({...newUserConfig, Role: "Admin"})}>Admin</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      setNewUserConfig({ ...newUserConfig, Role: 'User' })
+                    }
+                  >
+                    User
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      setNewUserConfig({ ...newUserConfig, Role: 'Admin' })
+                    }
+                  >
+                    Admin
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -221,13 +248,13 @@ function Admin() {
               </div>
             </div>
             {successMessage_user && (
-                  <div className="text-success mt-2">{successMessage_user}</div>
-                )}
+              <div className="text-success mt-2">{successMessage_user}</div>
+            )}
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Admin;
+export default Admin

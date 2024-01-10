@@ -1,118 +1,142 @@
-import axios from "axios";
-import {loadFromLocal} from "./storage";
-import {webSettingsProps} from "../views";
-import {NewUserProps} from "../components/UserDashboard/routes/admin";
+import axios from 'axios'
+import { loadFromLocal } from './storage.tsx'
+import { NewUserProps, webSettingsProps } from './types.tsx'
 
-const backendHost = "http://localhost:3001/api/";
-const localUserData = loadFromLocal("emauth")
+const backendHost = 'http://localhost:3001/api/'
+const localUserData = loadFromLocal('emauth')
 
-{/*     User routes     */}
-export function login(data: any) {
+/*     User routes     */
+export function login(data: { Email: string; Password: string }) {
+  const { Password, Email } = data
   return new Promise((res, rej) => {
     axios
       .post(backendHost + `login`, {
-        email: data.email,
-        password: data.password
+        Email,
+        Password,
       })
-      .then((result) => {
-        res({ ...result.data });
+      .then(result => {
+        res({ ...result.data })
       })
-      .catch((err) => {
-        rej(err);
-      });
-  });
+      .catch(err => {
+        rej(err)
+      })
+  })
 }
 
 export function createUser(data: NewUserProps) {
+  const { Email, Password, Role, Name } = data
   return new Promise((res, rej) => {
     axios
-      .post(backendHost + `createUser`, {
-        name: data.Name,
-        email: data.Email,
-        password: data.Password,
-        role: data.Role
-      },
-        {headers:{
+      .post(
+        backendHost + `createUser`,
+        {
+          Name,
+          Email,
+          Password,
+          Role,
+        },
+        {
+          headers: {
             'Content-Type': 'application/json',
-            'auth-token': localUserData.token
-          }}
-        )
-      .then((result) => {
-        res({ ...result.data });
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => {
+        res({ ...result.data })
       })
-      .catch((err) => {
-        rej(err);
-      });
-  });
+      .catch(err => {
+        rej(err)
+      })
+  })
 }
 
-export function changePassword(data: { email: string , oldPassword: string, newPassword: string }) {
+export function changePassword(data: {
+  oldPassword: string
+  newPassword: string
+}) {
+  const { oldPassword, newPassword } = data
   return new Promise((res, rej) => {
     axios
-      .patch(backendHost + `changePassword`, {
-        oldPassword: data.oldPassword,
-        newPassword: data.newPassword
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localUserData.token
-        }
+      .patch(
+        backendHost + `changePassword`,
+        {
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => {
+        res({ ...result.data })
       })
-      .then((result) => {
-        res({ ...result.data });
+      .catch(err => {
+        rej(err)
       })
-      .catch((err) => {
-        rej(err);
-      });
-  });
+  })
 }
 
 export async function get_users() {
-  const response = await axios
-  .get(backendHost + `getUsers`, {
+  const Res = await axios.get(backendHost + `getUsers`, {
     headers: {
       'Content-Type': 'application/json',
-      'auth-token': localUserData.token
-    }})
-  return response.data
-};
+      'auth-token': localUserData.token,
+    },
+  })
+  return Res.data
+}
 
 export function removeUser(userToDelete: string) {
   return new Promise((res, rej) => {
     axios
-      .delete(backendHost + `deleteUser`,{
+      .delete(backendHost + `deleteUser`, {
         headers: {
-        "userToDelete": userToDelete,
-        "auth-token": localUserData.token
-      }})
-      .then((result) => {
-        res({ ...result.data });
+          userToDelete,
+          'auth-token': localUserData.token,
+        },
       })
-      .catch((err) => {
-        rej(err);
-      });
-  });
+      .then(result => {
+        res({ ...result.data })
+      })
+      .catch(err => {
+        rej(err)
+      })
+  })
 }
 
-{/*     Web Settings routes     */}
+/*     Web Settings routes     */
 
-export function getWebSettings () {
+export function getWebSettings() {
   return new Promise((res, rej) => {
     axios
       .get(backendHost + 'getWebSettings')
-        .then((result) => res(result))
-        .catch((err) => { rej(err) })
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
   })
 }
-export function changeWebSettings (webSettings: webSettingsProps) {
+export function changeWebSettings(webSettings: webSettingsProps) {
+  const { MainPhoto, MainTitle, MainDesc, RestaurantDesc } = webSettings
   return new Promise((res, rej) => {
     axios
-      .patch(backendHost + 'changeWebSettings', {...webSettings}, {headers:{
-          'Content-Type': 'application/json',
-          'auth-token': localUserData.token
-        }})
-        .then((result) => res(result))
-        .catch((err) => { rej(err) })
+      .patch(
+        backendHost + 'changeWebSettings',
+        { MainPhoto, MainTitle, MainDesc, RestaurantDesc },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
   })
 }
-

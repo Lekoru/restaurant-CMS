@@ -1,95 +1,92 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "react-bootstrap/Navbar";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useNavigate } from 'react-router-dom'
+import Navbar from 'react-bootstrap/Navbar'
+import Container from 'react-bootstrap/Container'
+import Nav from 'react-bootstrap/Nav'
+import { useSelector, useDispatch } from 'react-redux'
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 //import Overlay from "../ui/Overlay";
-import { setAuth } from "../redux/silces/authSlice";
-import { loadFromLocal, removeFromLocal } from "../helpers/storage";
-import { toggleMenu } from "../redux/silces/menuSlice";
-import { RootState } from "../redux/store";
+import { setAuth } from '../redux/silces/authSlice.tsx'
+import { loadFromLocal, removeFromLocal } from '../helpers/storage.tsx'
+import { toggleMenu } from '../redux/silces/menuSlice.tsx'
+import { RootState } from '../redux/store.tsx'
 
 function Header() {
-  const authState = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
-  const userName = loadFromLocal("emauth")
+  const authState = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch()
+  const userName = loadFromLocal('emauth')
   //const mMenu = useSelector((state) => state.menu.menu);
-  const [secMenu, setSecMenu] = useState(false);
-  let navigate = useNavigate();
-  const location = useLocation();
-
- 
+  const [secMenu, setSecMenu] = useState(false)
+  let navigate = useNavigate()
+  const location = useLocation()
 
   const showSecMenu = () => {
     //show secondary  menu
-    secMenu ? setSecMenu(false) : setSecMenu(true);
-  };
+    secMenu ? setSecMenu(false) : setSecMenu(true)
+  }
 
   const toLogin = () => {
-    navigate("/login");
-    dispatch(toggleMenu(false));
-  };
+    navigate('/login')
+    dispatch(toggleMenu(false))
+  }
 
   const toRest = () => {
-    navigate("/in-resturant");
-    dispatch(toggleMenu(false));
-  };
+    navigate('/in-resturant')
+    dispatch(toggleMenu(false))
+  }
 
   const goHome = () => {
-    navigate("/");
-    dispatch(toggleMenu(false));
-  };
+    navigate('/')
+    dispatch(toggleMenu(false))
+  }
 
   const notShowSignIn = () => {
     if (authState.auth !== null) {
-      return false;
+      return false
     }
-    return !(location.pathname === "/login" || location.pathname === "/register");
-
-  };
+    return !(
+      location.pathname === '/login' || location.pathname === '/register'
+    )
+  }
 
   const notShowMenu = () => {
     if (authState.auth !== null) {
-      return false;
+      return false
     }
-    return !(location.pathname === "/in-resturant" || location.pathname === "/login");
-
-  };
-
+    return !(
+      location.pathname === '/in-resturant' || location.pathname === '/login'
+    )
+  }
 
   const logout = () => {
-    dispatch(setAuth(null));
-    removeFromLocal();
-    navigate("/");
-  };
+    dispatch(setAuth(null))
+    removeFromLocal()
+    navigate('/')
+  }
 
   const goToUserProfile = () => {
-    navigate("/user-dashboard/profile");
-    showSecMenu();
-  };
-
-
+    navigate('/user-dashboard/profile')
+    showSecMenu()
+  }
 
   useEffect(() => {
     let myFunction = () => {}
-    var header = document.getElementById("myHeader");
-    if(header){
-      var sticky = header.offsetTop;
+    const header = document.getElementById('myHeader')
+    if (header) {
+      const sticky = header.offsetTop
       myFunction = () => {
         if (window.pageYOffset > sticky && header) {
-          header.classList.add("bg-white-native");
+          header.classList.add('bg-white-native')
         } else {
-          if(header) header.classList.remove("bg-white-native");
+          if (header) header.classList.remove('bg-white-native')
         }
       }
     }
 
     window.onscroll = function () {
-      myFunction();
-    };
-  }, []);
+      myFunction()
+    }
+  }, [])
 
   return (
     <>
@@ -102,17 +99,17 @@ function Header() {
         <Container fluid className="mx-md-5 mx-3">
           <Navbar.Brand className="cur-pointer" onClick={goHome}>
             <span id="logo-text" className="text-dark">
-             Pizza Plaza
+              Pizza Plaza
             </span>
           </Navbar.Brand>
-          
+
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="#features"></Nav.Link>
             </Nav>
             <Nav>
               {authState.auth && (
-                <Nav.Link className="mx-3" style={{ position: "relative" }}>
+                <Nav.Link className="mx-3" style={{ position: 'relative' }}>
                   <span className="btn btn-n-small px-4" onClick={showSecMenu}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +123,7 @@ function Header() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    {(userName && userName.user.Name) || ""}
+                    {(userName && userName.user.Name) || ''}
                   </span>
 
                   {/** secondary menu */}
@@ -179,17 +176,13 @@ function Header() {
               )}
 
               <>
-                {
-                    notShowMenu()  && (
-                    <Nav.Link onClick={toRest}>
-                      <span className="btn btn-n-small px-4 fw-bold">
-                        Menu
-                      </span>
-                    </Nav.Link> 
-                    )
-                }
+                {notShowMenu() && (
+                  <Nav.Link onClick={toRest}>
+                    <span className="btn btn-n-small px-4 fw-bold">Menu</span>
+                  </Nav.Link>
+                )}
               </>
-              
+
               <>
                 {
                   notShowSignIn() && (
@@ -210,7 +203,7 @@ function Header() {
         </Container>
       </Navbar>
     </>
-  );
+  )
 }
 
-export default Header;
+export default Header

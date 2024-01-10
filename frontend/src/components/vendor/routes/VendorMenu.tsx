@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 function VendorMenu() {
-  return <div></div>;
+  return <div></div>
 }
 
-export default VendorMenu;
+export default VendorMenu
