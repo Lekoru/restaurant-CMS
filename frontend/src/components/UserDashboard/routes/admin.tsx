@@ -29,19 +29,14 @@ function Admin() {
   }
 
   const handleSaveClick_webPage = () => {
-    // Google Drive share link
+
     const googleDriveShareLink = webSettings.MainPhoto
 
-    // Extract ID from Google Drive share link
     const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
 
-    // Construct export link
     const exportLink = fileId
       ? `https://drive.google.com/uc?export=view&id=${fileId}`
       : ''
-    {
-      /* ------------------------------------------------------------------------------- */
-    }
 
     changeWebSettings({ ...webSettings, MainPhoto: exportLink }).then()
 

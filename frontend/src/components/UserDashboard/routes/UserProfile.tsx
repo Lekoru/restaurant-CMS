@@ -66,7 +66,7 @@ function UserProfile() {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="mb-4 px-2">
-                  <label htmlFor="userName" className="form-label fs-16">
+                  <label htmlFor="oldpassword" className="form-label fs-16">
                     Old password
                   </label>
                   <input
@@ -80,7 +80,7 @@ function UserProfile() {
               <div className="col-12 col-md-6">
                 <div className="mb-4 mt-2 px-2">
                   <label
-                    htmlFor="exampleInputPassword1"
+                    htmlFor="password"
                     className="form-label fs-16"
                   >
                     New password
@@ -94,7 +94,7 @@ function UserProfile() {
                 </div>
                 <div className="mb-4 mt-2 px-2">
                   <label
-                    htmlFor="exampleInputPassword2"
+                    htmlFor="passwordconf"
                     className="form-label fs-16"
                   >
                     Confirm new password
