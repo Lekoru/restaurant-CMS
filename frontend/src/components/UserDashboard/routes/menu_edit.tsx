@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { removeUser } from '../../../helpers/web.tsx'
+import { createDish, deleteDish, editDish } from '../../../helpers/web.tsx'
 import { loadFromLocal } from '../../../helpers/storage.tsx'
 import { useDispatch } from 'react-redux'
-import { getUsersList } from '../../../redux/silces/usersSlice.tsx'
 import { DiSqllite } from 'react-icons/di'
 import { MdDelete } from 'react-icons/md'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import { initNewDishProps, NewDishProps } from '../../../helpers/types.tsx'
+import { getDishesList } from '../../../redux/silces/dishesSlice.tsx'
 
 function Admin() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [DishName, setDishName] = useState('')
-  const [dishDescription, setDishDescription] = useState('')
-  const [ingredientsList, setIngredientsList] = useState('')
-  const [photoLink, setPhotoLink] = useState('')
-  const [cost, setCost] = useState('')
-
-  const [, setUserData] = useState(loadFromLocal('emauth'))
-  const [usersData, setUsersData] = useState([])
+  const [newDish, setNewDish] = useState<NewDishProps>(initNewDishProps)
+  const [dishData, setDishData] = useState<NewDishProps>(initNewDishProps)
+  const [dishesList, setDishesList] = useState<NewDishProps[]>([])
   const [showModal, setShowModal] = useState(false)
-
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const handleCloseModal = () => setShowModal(false)
-  const handleShowModal = () => setShowModal(true)
+  const handleShowModal = (id: number) => {
+    dishData.id = id
+    setShowModal(true)
+  }
 
   const extractIdFromGoogleDriveLink = (link_photo: string) => {
     const regex = /\/file\/d\/(.*?)\//
@@ -32,50 +32,21 @@ function Admin() {
     return match ? match[1] : null
   }
 
-  const [, setSavedDishData] = useState({
-    dishName: '',
-    dishDesc: '',
-    ingredients: '',
-    photoLink: '',
-    cost: '',
-  })
-
-  const [dishData, setDishData] = useState({
-    dishName: '',
-    dishDesc: '',
-    ingredients: '',
-    photoLink: '',
-    cost: '',
-  })
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setDishData(prevData => ({ ...prevData, [name]: value }))
+  const handleSaveClick1 = () => {
+    createDish(newDish)
+      .then(() => {
+        setSuccessMessage('Successfully created new dish.')
+      })
+      .catch(e => {
+        setErrorMessage(
+          e && 'error' in e.response.data ? e.response.data.error : '',
+        )
+      })
+    setNewDish(initNewDishProps)
   }
 
-  const handleSaveClick1 = () => {
-
-    ////////////////////////////////////////////////////////////////////////////////
-    setDishName('');
-    setDishDescription('');
-    setIngredientsList('');
-    setPhotoLink('');
-    setCost('');
-
-  };
-
-  const handleSaveClick2 = () => {
-
-    console.log('Dish Data:', dishData)
-
-
-    setSavedDishData(prevData => ({
-      ...prevData,
-      ...dishData,
-      googleDriveShareLink: dishData.photoLink,
-    }))
-
-    const googleDriveShareLink = dishData.photoLink
+  const handleSaveClick2 = async () => {
+    const googleDriveShareLink = dishData.Photo
 
     const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
 
@@ -83,22 +54,18 @@ function Admin() {
       ? `https://drive.google.com/uc?export=view&id=${fileId}`
       : ''
 
-    setSavedDishData(prevData => ({
-      ...prevData,
-      exportLink: exportLink,
-    }))
-
+    await editDish({ ...dishData, Photo: exportLink })
+    setDishData(initNewDishProps)
     handleCloseModal()
   }
 
   useEffect(() => {
-    dispatch(getUsersList())
+    dispatch(getDishesList())
     let temp = loadFromLocal('emauth')
     if (!temp) navigate('/')
-    setUserData(temp)
-    temp = loadFromLocal('usersList')
-    setUsersData(temp)
-    return localStorage.removeItem('usersList')
+    temp = loadFromLocal('dishesList')
+    setDishesList(temp)
+    return localStorage.removeItem('dishesList')
   }, [navigate, dispatch])
 
   return (
@@ -118,8 +85,10 @@ function Admin() {
                   <input
                     type="text"
                     className="form-control input-n-medium sign-up-form"
-                    value={DishName}
-                    onChange={e => setDishName(e.target.value)}
+                    value={newDish.DishName}
+                    onChange={e =>
+                      setNewDish({ ...newDish, DishName: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-4 px-2">
@@ -129,8 +98,10 @@ function Admin() {
                   <input
                     type="text"
                     className="form-control input-n-medium sign-up-form"
-                    value={dishDescription}
-                    onChange={e => setDishDescription(e.target.value)}
+                    value={newDish.DishDesc}
+                    onChange={e =>
+                      setNewDish({ ...newDish, DishDesc: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-4 px-2">
@@ -140,8 +111,10 @@ function Admin() {
                   <input
                     type="text"
                     className="form-control input-n-medium sign-up-form"
-                    value={ingredientsList}
-                    onChange={e => setIngredientsList(e.target.value)}
+                    value={newDish.Ingredients}
+                    onChange={e =>
+                      setNewDish({ ...newDish, Ingredients: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-4 px-2">
@@ -151,8 +124,10 @@ function Admin() {
                   <input
                     type="text"
                     className="form-control input-n-medium sign-up-form"
-                    value={photoLink}
-                    onChange={e => setPhotoLink(e.target.value)}
+                    value={newDish.Photo}
+                    onChange={e =>
+                      setNewDish({ ...newDish, Photo: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-4 px-2">
@@ -160,10 +135,15 @@ function Admin() {
                     Cost
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control input-n-medium sign-up-form"
-                    value={cost}
-                    onChange={e => setCost(e.target.value)}
+                    value={newDish.Price}
+                    onChange={e =>
+                      setNewDish({
+                        ...newDish,
+                        Price: parseFloat(e.target.value),
+                      })
+                    }
                   />
                 </div>
                 <div className="row pt-4 mt-2 px-2">
@@ -182,7 +162,7 @@ function Admin() {
           </div>
         </div>
       </div>
-    <div className="mt-4"></div>
+      <div className="mt-4"></div>
       <div className="row">
         <div className="col-12 col-md-10">
           <div className="card border-0 shadow-n px-md-4 px-2 py-5 br-theme bg-white">
@@ -199,22 +179,27 @@ function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {usersData &&
-                  usersData.map((user: any, index: number) => {
+                {dishesList &&
+                  dishesList.map((dish: any, index: number) => {
                     return (
                       <tr key={index}>
-                        <td>{user.id}</td>
-                        <td>{user.Name}</td>
-                        <td>{user.Email}</td>
-                        <td>{user.Role}</td>
-                        <td>{}</td>
+                        <td>{dish.DishName}</td>
+                        <td>{dish.DishDesc}</td>
+                        <td>{dish.Ingredients}</td>
+                        <td>{dish.Photo}</td>
+                        <td>{dish.Price}</td>
                         <td>
-                          <DiSqllite size={30} onClick={handleShowModal} />
+                          <DiSqllite
+                            size={30}
+                            onClick={() => {
+                              handleShowModal(dish.id)
+                            }}
+                          />
                         </td>
                         <td>
                           <MdDelete
                             size={30}
-                            onClick={() => removeUser(user.Email)}
+                            onClick={() => deleteDish(dish.id)}
                           />
                         </td>
                       </tr>
@@ -233,8 +218,10 @@ function Admin() {
                     type="text"
                     placeholder="Dish Name"
                     name="dishName"
-                    value={dishData.dishName}
-                    onChange={handleInputChange}
+                    value={dishData.DishName}
+                    onChange={e =>
+                      setDishData({ ...dishData, DishName: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-3">
@@ -242,8 +229,10 @@ function Admin() {
                     type="text"
                     placeholder="Dish Description"
                     name="dishDesc"
-                    value={dishData.dishDesc}
-                    onChange={handleInputChange}
+                    value={dishData.DishDesc}
+                    onChange={e =>
+                      setDishData({ ...dishData, DishDesc: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-3">
@@ -251,8 +240,10 @@ function Admin() {
                     type="text"
                     placeholder="Ingridients"
                     name="ingredients"
-                    value={dishData.ingredients}
-                    onChange={handleInputChange}
+                    value={dishData.Ingredients}
+                    onChange={e =>
+                      setDishData({ ...dishData, Ingredients: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-3">
@@ -260,17 +251,24 @@ function Admin() {
                     type="text"
                     placeholder="Photo link"
                     name="photoLink"
-                    value={dishData.photoLink}
-                    onChange={handleInputChange}
+                    value={dishData.Photo}
+                    onChange={e =>
+                      setDishData({ ...dishData, Photo: e.target.value })
+                    }
                   />
                 </div>
                 <div className="mb-3">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Cost"
                     name="cost"
-                    value={dishData.cost}
-                    onChange={handleInputChange}
+                    value={dishData.Price}
+                    onChange={e =>
+                      setDishData({
+                        ...dishData,
+                        Price: parseFloat(e.target.value),
+                      })
+                    }
                   />
                 </div>
               </Modal.Body>

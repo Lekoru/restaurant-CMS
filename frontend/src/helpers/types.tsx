@@ -35,3 +35,24 @@ export const initWebSettings: webSettingsProps = {
   MainDesc: '',
   RestaurantDesc: '',
 }
+
+export interface NewDishProps {
+  DishName: string
+  DishDesc: string
+  Ingredients: string
+  Photo: string
+  Price: number | undefined
+  id?: number
+}
+
+export interface DishState {
+  dishesList: NewDishProps[]
+}
+
+export const initNewDishProps = {
+  DishName: '',
+  DishDesc: '',
+  Ingredients: '',
+  Photo: '',
+  Price: undefined,
+}

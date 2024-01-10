@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { loadFromLocal } from './storage.tsx'
-import { NewUserProps, webSettingsProps } from './types.tsx'
+import { NewDishProps, NewUserProps, webSettingsProps } from './types.tsx'
 
 const backendHost = 'http://localhost:3001/api/'
 const localUserData = loadFromLocal('emauth')
@@ -134,6 +134,74 @@ export function changeWebSettings(webSettings: webSettingsProps) {
           },
         },
       )
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
+  })
+}
+
+/*     Menu routes     */
+
+export function createDish(data: NewDishProps) {
+  const { DishName, DishDesc, Ingredients, Photo, Price } = data
+  return new Promise((res, rej) => {
+    axios
+      .post(
+        backendHost + 'createDish',
+        { DishName, DishDesc, Ingredients, Photo, Price },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
+  })
+}
+export async function getMenu() {
+  const Res = await axios.get(backendHost + `getMenu`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': localUserData.token,
+    },
+  })
+  return Res.data
+}
+export function editDish(data: NewDishProps) {
+  const { id, DishName, DishDesc, Ingredients, Photo, Price } = data
+  return new Promise((res, rej) => {
+    axios
+      .patch(
+        backendHost + 'editDish',
+        { id, DishName, DishDesc, Ingredients, Photo, Price },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
+  })
+}
+export function deleteDish(id: number) {
+  return new Promise((res, rej) => {
+    axios
+      .delete(backendHost + 'deleteDish', {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localUserData.token,
+          id,
+        },
+      })
       .then(result => res(result))
       .catch(err => {
         rej(err)

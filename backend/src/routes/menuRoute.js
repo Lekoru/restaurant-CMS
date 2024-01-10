@@ -39,9 +39,9 @@ router.post('/createDish', async (req, res) => {
 
 router.get('/getMenu', async (req, res) => {
   try {
-    const MenuList = await menu.findAll()
-    if (!MenuList) return res.status(400).json({ message: 'No dishes found.' })
-    return res.status(200).json(MenuList)
+    const menuList = await menu.findAll()
+    if (!menuList) return res.status(400).json({ message: 'No dishes found.' })
+    return res.status(200).json({ menuList })
   } catch (e) {
     console.error(e)
     return res.status(400).json({ error: e.message })
@@ -52,6 +52,10 @@ router.patch('/editDish', async (req, res) => {
   const transaction = await db.transaction()
   const { id, DishName, DishDesc, Ingredients, Photo, Price } = req.body
   try {
+    if (!DishName && !DishDesc && !Ingredients && !Photo && !Price) {
+      await transaction.rollback()
+      return res.status(400).json({ message: 'No data provided.' })
+    }
     const user = await authenticateToken(req, res, transaction)
     if (user.Role !== 'Admin' && user.Role !== 'User') {
       await transaction.rollback()
@@ -87,7 +91,7 @@ router.patch('/editDish', async (req, res) => {
 
 router.delete('/deleteDish', async (req, res) => {
   const transaction = await db.transaction()
-  const { id } = req.body
+  const id = req.header('id')
   try {
     const user = await authenticateToken(req, res, transaction)
     if (user.Role !== 'Admin' && user.Role !== 'User') {
