@@ -11,7 +11,7 @@ router.patch('/changeWebSettings', async (req, res) => {
   const transaction = await db.transaction()
   const { MainPhoto, MainTitle, MainDesc, RestaurantDesc } = req.body
   try {
-    const user = await authenticateToken(req, res)
+    const user = await authenticateToken(req, res, transaction)
 
     if (user.Role !== 'Admin') {
       await transaction.rollback()
@@ -26,7 +26,7 @@ router.patch('/changeWebSettings', async (req, res) => {
       transaction,
     })
 
-    webSettings.update(
+    await webSettings.update(
       {
         MainPhoto: MainPhoto || webSettings.MainPhoto,
         MainTitle: MainTitle || webSettings.MainTitle,
