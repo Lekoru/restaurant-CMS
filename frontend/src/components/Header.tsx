@@ -71,9 +71,9 @@ function Header() {
 
   useEffect(() => {
     let myFunction = () => {}
-    var header = document.getElementById('myHeader')
+    const header = document.getElementById('myHeader')
     if (header) {
-      var sticky = header.offsetTop
+      const sticky = header.offsetTop
       myFunction = () => {
         if (window.pageYOffset > sticky && header) {
           header.classList.add('bg-white-native')
