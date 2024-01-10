@@ -1,20 +1,18 @@
 import axios from 'axios'
 import { loadFromLocal } from './storage'
-import { webSettingsProps } from '../views'
-import { NewUserProps } from '../components/UserDashboard/routes/admin'
+import { NewUserProps, webSettingsProps } from './types'
 
 const backendHost = 'http://localhost:3001/api/'
 const localUserData = loadFromLocal('emauth')
 
-{
-  /*     User routes     */
-}
-export function login(data: any) {
+/*     User routes     */
+export function login(data: { Email: string; Password: string }) {
+  const { Password, Email } = data
   return new Promise((res, rej) => {
     axios
       .post(backendHost + `login`, {
-        email: data.email,
-        password: data.password,
+        Email,
+        Password,
       })
       .then(result => {
         res({ ...result.data })
@@ -26,15 +24,16 @@ export function login(data: any) {
 }
 
 export function createUser(data: NewUserProps) {
+  const { Email, Password, Role, Name } = data
   return new Promise((res, rej) => {
     axios
       .post(
         backendHost + `createUser`,
         {
-          name: data.Name,
-          email: data.Email,
-          password: data.Password,
-          role: data.Role,
+          Name,
+          Email,
+          Password,
+          Role,
         },
         {
           headers: {
@@ -53,17 +52,17 @@ export function createUser(data: NewUserProps) {
 }
 
 export function changePassword(data: {
-  email: string
   oldPassword: string
   newPassword: string
 }) {
+  const { oldPassword, newPassword } = data
   return new Promise((res, rej) => {
     axios
       .patch(
         backendHost + `changePassword`,
         {
-          oldPassword: data.oldPassword,
-          newPassword: data.newPassword,
+          oldPassword,
+          newPassword,
         },
         {
           headers: {
@@ -82,13 +81,13 @@ export function changePassword(data: {
 }
 
 export async function get_users() {
-  const response = await axios.get(backendHost + `getUsers`, {
+  const Res = await axios.get(backendHost + `getUsers`, {
     headers: {
       'Content-Type': 'application/json',
       'auth-token': localUserData.token,
     },
   })
-  return response.data
+  return Res.data
 }
 
 export function removeUser(userToDelete: string) {
@@ -96,7 +95,7 @@ export function removeUser(userToDelete: string) {
     axios
       .delete(backendHost + `deleteUser`, {
         headers: {
-          userToDelete: userToDelete,
+          userToDelete,
           'auth-token': localUserData.token,
         },
       })
@@ -109,9 +108,7 @@ export function removeUser(userToDelete: string) {
   })
 }
 
-{
-  /*     Web Settings routes     */
-}
+/*     Web Settings routes     */
 
 export function getWebSettings() {
   return new Promise((res, rej) => {
@@ -124,11 +121,12 @@ export function getWebSettings() {
   })
 }
 export function changeWebSettings(webSettings: webSettingsProps) {
+  const { MainPhoto, MainTitle, MainDesc, RestaurantDesc } = webSettings
   return new Promise((res, rej) => {
     axios
       .patch(
         backendHost + 'changeWebSettings',
-        { ...webSettings },
+        { MainPhoto, MainTitle, MainDesc, RestaurantDesc },
         {
           headers: {
             'Content-Type': 'application/json',

@@ -5,15 +5,15 @@ import jwt from 'jsonwebtoken'
 import securePassword from 'secure-random-password'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
+
 dotenv.config()
 
 const router = Router()
 const { users } = db.models
 
-const hassPassword = async password => {
+const hashPassword = async password => {
   const salt = await bcrypt.genSalt()
-  const hashPass = await bcrypt.hash(password, salt)
-  return hashPass
+  return await bcrypt.hash(password, salt)
 }
 
 export const authenticateToken = async (req, res) => {
@@ -35,31 +35,31 @@ export const authenticateToken = async (req, res) => {
 }
 
 router.post('/createUser', async (req, res) => {
-  const { name, email, password, role } = req.body
+  const { Name, Email, Password, Role } = req.body
   let user = await authenticateToken(req, res)
   try {
     if (user.Role !== 'Admin')
       return res.status(400).json({ message: "You don't have permission." })
-    user = await users.findOne({ where: { Email: email } })
+    user = await users.findOne({ where: { Email } })
     if (user)
       return res
         .status(400)
         .json({ message: 'User with this email already exist.' })
-    if (!name) return res.status(400).json({ message: 'Name not entered.' })
-    if (!email) return res.status(400).json({ message: 'Email not entered.' })
-    if (!password)
+    if (!Name) return res.status(400).json({ message: 'Name not entered.' })
+    if (!Email) return res.status(400).json({ message: 'Email not entered.' })
+    if (!Password)
       return res.status(400).json({ message: 'Password not entered.' })
-    if (!role) return res.status(400).json({ message: 'Role not entered.' })
-    if (role !== 'Admin' && role !== 'User')
+    if (!Role) return res.status(400).json({ message: 'Role not entered.' })
+    if (Role !== 'Admin' && Role !== 'User')
       return res.status(400).json({ message: 'Invalid role.' })
 
-    const hashedPass = await hassPassword(password)
+    const hashedPass = await hashPassword(Password)
 
     const newUser = await users.create({
-      Name: name,
-      Email: email,
+      Name,
+      Email,
       Password: hashedPass,
-      Role: role,
+      Role,
     })
 
     return res.status(200).json({ ...newUser.dataValues, Password: undefined })
@@ -70,14 +70,14 @@ router.post('/createUser', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body
+  const { Email, Password } = req.body
   try {
-    if (!email) return res.status(400).json({ message: 'Missing email.' })
-    const user = await users.findOne({ where: { Email: email } })
+    if (!Email) return res.status(400).json({ message: 'Missing email.' })
+    const user = await users.findOne({ where: { Email: Email } })
     if (!user) return res.status(400).json({ message: "User doesn't exist." })
-    if (!password) return res.status(400).json({ message: 'Missing password.' })
+    if (!Password) return res.status(400).json({ message: 'Missing password.' })
 
-    if (!(await bcrypt.compare(password, user.Password)))
+    if (!(await bcrypt.compare(Password, user.Password)))
       return res.status(400).json({ message: 'Invalid password.' })
 
     const token = jwt.sign(
@@ -150,7 +150,7 @@ router.patch('/changePassword', async (req, res) => {
       return res.status(400).json({ error: 'New password not entered.' })
     }
 
-    const hashedPass = await hassPassword(newPassword)
+    const hashedPass = await hashPassword(newPassword)
     await user.update({ Password: hashedPass }, { transaction })
     await transaction.commit()
     res.status(200).json({ message: 'Password successfully changed.' })
@@ -201,7 +201,7 @@ router.patch('/genUserPassword', async (req, res) => {
     }
     const randomPassword = securePassword.randomPassword({ length: 12 })
 
-    userToGen.update({ Password: randomPassword }, transaction)
+    await userToGen.update({ Password: randomPassword }, transaction)
     await transaction.commit()
     res.status(200).json({ newPassword: randomPassword })
   } catch (e) {

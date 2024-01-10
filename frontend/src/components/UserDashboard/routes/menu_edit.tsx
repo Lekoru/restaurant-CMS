@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { changePassword, removeUser } from '../../../helpers/web'
+import { removeUser } from '../../../helpers/web'
 import { loadFromLocal } from '../../../helpers/storage'
 import { useDispatch } from 'react-redux'
 import { getUsersList } from '../../../redux/silces/usersSlice'
@@ -13,7 +13,7 @@ function Admin() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [userData, setUserData] = useState(loadFromLocal('emauth'))
+  const [, setUserData] = useState(loadFromLocal('emauth'))
   const [usersData, setUsersData] = useState([])
   const [showModal, setShowModal] = useState(false)
 
@@ -26,7 +26,7 @@ function Admin() {
     return match ? match[1] : null
   }
 
-  const [savedDishData, setSavedDishData] = useState({
+  const [, setSavedDishData] = useState({
     dishName: '',
     dishDesc: '',
     ingredients: '',
@@ -84,6 +84,7 @@ function Admin() {
     setUserData(temp)
     temp = loadFromLocal('usersList')
     setUsersData(temp)
+    return localStorage.removeItem('usersList')
   }, [navigate, dispatch])
 
   return (
@@ -96,7 +97,7 @@ function Admin() {
                 <tr>
                   <th>Dish Name</th>
                   <th>Dish Description</th>
-                  <th>Ingridients</th>
+                  <th>Ingredients</th>
                   <th>Photo Link</th>
                   <th>Cost</th>
                   <th>Edit</th>
