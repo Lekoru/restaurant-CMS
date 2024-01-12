@@ -209,7 +209,7 @@ router.patch('/genUserPassword', async (req, res) => {
       await transaction.rollback()
       return res.status(400).json({ message: "You don't have permissions." })
     }
-    userToGen = await user.findOne({
+    userToGen = await users.findOne({
       where: { Email: userToGenPass },
       transaction,
     })
@@ -221,7 +221,9 @@ router.patch('/genUserPassword', async (req, res) => {
     }
     const randomPassword = securePassword.randomPassword({ length: 12 })
 
-    await userToGen.update({ Password: randomPassword }, transaction)
+    const hashedPass = await hashPassword(randomPassword)
+
+    await userToGen.update({ Password: hashedPass }, transaction)
     await transaction.commit()
     res.status(200).json({ newPassword: randomPassword })
   } catch (e) {
