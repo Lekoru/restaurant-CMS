@@ -164,12 +164,7 @@ export function createDish(data: NewDishProps) {
   })
 }
 export async function getMenu() {
-  const Res = await axios.get(backendHost + `getMenu`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'auth-token': localUserData.token,
-    },
-  })
+  const Res = await axios.get(backendHost + `getMenu`)
   return Res.data
 }
 export function editDish(data: NewDishProps) {
