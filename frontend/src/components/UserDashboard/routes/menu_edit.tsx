@@ -46,24 +46,19 @@ function Admin() {
   }
 
   const handleSaveClick2 = async () => {
-    const googleDriveShareLink = dishData.Photo
-
-    const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
-
-    const exportLink = fileId
-      ? `https://drive.google.com/uc?export=view&id=${fileId}`
-      : ''
-
-    await editDish({ ...dishData, Photo: exportLink })
+    await editDish({ ...dishData })
     setDishData(initNewDishProps)
     handleCloseModal()
   }
 
   useEffect(() => {
-    dispatch(getDishesList())
     let temp = loadFromLocal('emauth')
     if (!temp) navigate('/')
     temp = loadFromLocal('dishesList')
+    if (!temp) {
+      dispatch(getDishesList())
+      temp = loadFromLocal('dishesList')
+    }
     setDishesList(temp)
     return localStorage.removeItem('dishesList')
   }, [navigate, dispatch])
