@@ -1,9 +1,17 @@
 import './foodViewcss.css'
 import React from 'react'
-function FoodViewModal({ closeModal }: any) {
-  const title = 'Pizza'
-  const description = 'Tasty pizza.'
-  const ingredients = ['cheese', 'ham', 'sauce', 'tomato']
+import { NewDishProps } from '../helpers/types.tsx'
+
+interface FoodViewProps {
+  closeModal: Function
+  dish: NewDishProps
+  index: number
+}
+function FoodViewModal({ closeModal, dish, index }: FoodViewProps) {
+  const title = dish.DishName
+  const description = dish.DishDesc
+  const ingredients = dish.Ingredients.split(',')
+
   return (
     <>
       <div
@@ -17,11 +25,11 @@ function FoodViewModal({ closeModal }: any) {
         <div className="modal-dialog modal-dialog modal-dialog-centered modal-xl">
           <div className="modal-content delete">
             <i
-              onClick={closeModal}
+              onClick={() => closeModal(index)}
               className="bi bi-x position-absolute cur-pointer end-0 p-0 m-0"
               style={{
-                fontSize: '38px',
-                top: '-1%',
+                fontSize: '36px',
+                top: '0%',
                 zIndex: '45',
                 backgroundColor: '#eee',
               }}
@@ -29,7 +37,7 @@ function FoodViewModal({ closeModal }: any) {
 
             <div className="d-sm-flex justify-content-between d-inline-block">
               <img
-                src="/images/unsplash_MqT0asuoIcU111.png"
+                src={dish.Photo || ''}
                 alt=""
                 className="img-fluid bg-dark image"
               />
@@ -68,7 +76,7 @@ function FoodViewModal({ closeModal }: any) {
           </div>
         </div>
       </div>
-      <div onClick={closeModal} className="modal-backdrop show"></div>
+      <div onClick={() => closeModal(index)} className="modal-backdrop show" />
     </>
   )
 }

@@ -1,7 +1,44 @@
-import Meal from '../ui/Meal.tsx'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { loadFromLocal } from '../helpers/storage.tsx'
+import { getDishesList } from '../redux/silces/dishesSlice.tsx'
+import { useDispatch } from 'react-redux'
+import { NewDishProps } from '../helpers/types.tsx'
+import FoodViewModal from '../ui/FoodViewModal.tsx'
 
 function InRestaurant() {
+  const dispatch = useDispatch()
+  const [dishesList, setDishesList] = useState<NewDishProps[]>([])
+  const [isViewingItem, setIsViewItem] = useState(
+    new Array(dishesList.length).fill(false),
+  )
+  const [isLoaded, setIsLoaded] = useState(false)
+  const showMealDetail = (index: number) => {
+    setIsViewItem(prevState => {
+      const temp = [...prevState]
+      temp.forEach(() => {
+        return false
+      })
+      prevState[index] = true
+      return temp
+    })
+  }
+
+  const closeModal = (index: number) => {
+    setIsViewItem(prevState => {
+      const temp = [...prevState]
+      temp[index] = false
+      return temp
+    })
+  }
+
+  useEffect(() => {
+    dispatch(getDishesList())
+    let temp = loadFromLocal('dishesList')
+    setDishesList(temp)
+    setIsViewItem(new Array(temp.length).fill(false))
+    setIsLoaded(true)
+  }, [dispatch])
+
   return (
     <section>
       <div
@@ -42,20 +79,53 @@ function InRestaurant() {
         </div>
       </div>
 
-      <div className="container">
-        {/** means */}
-        <div className="row pt-3 px-2">
-          {/** summer lunch  */}
-          <div className=" fw-bold h4">
-            <small className=" py-1">Summer Lunch</small>
+      {isLoaded && (
+        <div className="container">
+          {/** means */}
+          <div className="row pt-3 px-2">
+            {/** summer lunch  */}
+            <div className=" fw-bold h4">
+              <small className=" py-1">Summer Lunch</small>
+            </div>
+          </div>
+          <div className="row px-2">
+            {dishesList &&
+              dishesList.map((dish, index) => {
+                return (
+                  <div
+                    className="col-12 col-md-6 col-lg-3 cur-pointer"
+                    onClick={() => showMealDetail(index)}
+                    key={index}
+                  >
+                    <div className="card border-0">
+                      <div className="card-body px-0">
+                        <img
+                          src={dish.Photo}
+                          alt=""
+                          className="img-fluid w-100"
+                        />
+                        <h6 className="card-title pt-2 restaurantCardHeader fw-bold text-uppercase mb-1">
+                          {dish.DishName}
+                        </h6>
+                        <p className="card-text mb-1 restaurantCardText">
+                          {dish.DishDesc}
+                        </p>
+                        <div className="fw-bold">{dish.Price} Zł</div>
+                      </div>
+                    </div>
+                    {isViewingItem[index] && (
+                      <FoodViewModal
+                        closeModal={closeModal}
+                        dish={dish}
+                        index={index}
+                      />
+                    )}
+                  </div>
+                )
+              })}
           </div>
         </div>
-        <div className="row px-2">
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((rest, index) => (
-            <Meal key={index} />
-          ))}
-        </div>
-      </div>
+      )}
     </section>
   )
 }
