@@ -140,6 +140,25 @@ export function changeWebSettings(webSettings: webSettingsProps) {
       })
   })
 }
+export function genUserPassword(userToGenPass: string) {
+  return new Promise((res, rej) => {
+    axios
+      .patch(
+        backendHost + 'genUserPassword',
+        { userToGenPass },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localUserData.token,
+          },
+        },
+      )
+      .then(result => res(result))
+      .catch(err => {
+        rej(err)
+      })
+  })
+}
 
 /*     Menu routes     */
 
