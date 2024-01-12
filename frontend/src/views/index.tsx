@@ -1,5 +1,4 @@
 import Wrapper from '../components/Index/Wrapper.tsx'
-import PopularDishes from '../components/Index/PopularDishes.tsx'
 import Partners from '../components/Index/Partners.tsx'
 import Reviews from '../components/Index/Reviews.tsx'
 import Footer from '../components/Index/Footer.tsx'
@@ -35,7 +34,6 @@ function Index() {
   return (
     <>
       <Wrapper loading={loading} webSettings={webSettings} />
-      <PopularDishes />
       <Partners loading={loading} webSettings={webSettings} />
       <Reviews />
       <Footer />
