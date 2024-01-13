@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { changePassword, removeUser } from '../../../helpers/web.tsx'
+import {
+  changePassword,
+  genUserPassword,
+  removeUser,
+} from '../../../helpers/web.tsx'
 import { loadFromLocal } from '../../../helpers/storage.tsx'
 import { useDispatch } from 'react-redux'
 import { getUsersList } from '../../../redux/silces/usersSlice.tsx'
@@ -79,10 +83,7 @@ function UserProfile() {
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-4 mt-2 px-2">
-                  <label
-                    htmlFor="password"
-                    className="form-label fs-16"
-                  >
+                  <label htmlFor="password" className="form-label fs-16">
                     New password
                   </label>
                   <input
@@ -93,10 +94,7 @@ function UserProfile() {
                   />
                 </div>
                 <div className="mb-4 mt-2 px-2">
-                  <label
-                    htmlFor="passwordconf"
-                    className="form-label fs-16"
-                  >
+                  <label htmlFor="passwordconf" className="form-label fs-16">
                     Confirm new password
                   </label>
                   <input
@@ -153,7 +151,14 @@ function UserProfile() {
                           <td>{user.Name}</td>
                           <td>{user.Email}</td>
                           <td>{user.Role}</td>
-                          <td>{<LiaExpeditedssl size={30} />}</td>
+                          <td>
+                            {
+                              <LiaExpeditedssl
+                                size={30}
+                                onClick={() => genUserPassword(user.Email)}
+                              />
+                            }
+                          </td>
                           <td>
                             {
                               <MdDelete
