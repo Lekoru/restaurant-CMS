@@ -3,10 +3,9 @@ import { loadFromLocal } from './storage.tsx'
 import { NewDishProps, NewUserProps, webSettingsProps } from './types.tsx'
 
 const backendHost = 'http://localhost:3001/api/'
-const localUserData = loadFromLocal('emauth')
 
 /*     User routes     */
-export function login(data: { Email: string; Password: string }) {
+export async function login(data: { Email: string; Password: string }) {
   const { Password, Email } = data
   return new Promise((res, rej) => {
     axios
@@ -23,8 +22,9 @@ export function login(data: { Email: string; Password: string }) {
   })
 }
 
-export function createUser(data: NewUserProps) {
+export async function createUser(data: NewUserProps) {
   const { Email, Password, Role, Name } = data
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .post(
@@ -51,11 +51,12 @@ export function createUser(data: NewUserProps) {
   })
 }
 
-export function changePassword(data: {
+export async function changePassword(data: {
   oldPassword: string
   newPassword: string
 }) {
   const { oldPassword, newPassword } = data
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .patch(
@@ -81,16 +82,22 @@ export function changePassword(data: {
 }
 
 export async function get_users() {
-  const Res = await axios.get(backendHost + `getUsers`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'auth-token': localUserData.token,
-    },
-  })
-  return Res.data
+  const localUserData = await loadFromLocal('emauth')
+  try {
+    const Res = await axios.get(backendHost + `getUsers`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': localUserData.token,
+      },
+    })
+    return Res.data
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-export function removeUser(userToDelete: string) {
+export async function removeUser(userToDelete: string) {
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .delete(backendHost + `deleteUser`, {
@@ -110,7 +117,7 @@ export function removeUser(userToDelete: string) {
 
 /*     Web Settings routes     */
 
-export function getWebSettings() {
+export async function getWebSettings() {
   return new Promise((res, rej) => {
     axios
       .get(backendHost + 'getWebSettings')
@@ -120,8 +127,9 @@ export function getWebSettings() {
       })
   })
 }
-export function changeWebSettings(webSettings: webSettingsProps) {
+export async function changeWebSettings(webSettings: webSettingsProps) {
   const { MainPhoto, MainTitle, MainDesc, RestaurantDesc } = webSettings
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .patch(
@@ -140,7 +148,8 @@ export function changeWebSettings(webSettings: webSettingsProps) {
       })
   })
 }
-export function genUserPassword(userToGenPass: string) {
+export async function genUserPassword(userToGenPass: string) {
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .patch(
@@ -162,8 +171,9 @@ export function genUserPassword(userToGenPass: string) {
 
 /*     Menu routes     */
 
-export function createDish(data: NewDishProps) {
+export async function createDish(data: NewDishProps) {
   const { DishName, DishDesc, Ingredients, Photo, Price } = data
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .post(
@@ -186,8 +196,9 @@ export async function getMenu() {
   const Res = await axios.get(backendHost + `getMenu`)
   return Res.data
 }
-export function editDish(data: NewDishProps) {
+export async function editDish(data: NewDishProps) {
   const { id, DishName, DishDesc, Ingredients, Photo, Price } = data
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .patch(
@@ -206,7 +217,8 @@ export function editDish(data: NewDishProps) {
       })
   })
 }
-export function deleteDish(id: number) {
+export async function deleteDish(id: number) {
+  const localUserData = await loadFromLocal('emauth')
   return new Promise((res, rej) => {
     axios
       .delete(backendHost + 'deleteDish', {
