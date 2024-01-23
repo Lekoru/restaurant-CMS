@@ -30,13 +30,7 @@ function Admin() {
 
   const handleSaveClick_webPage = () => {
 
-    const googleDriveShareLink = webSettings.MainPhoto
-
-    const fileId = extractIdFromGoogleDriveLink(googleDriveShareLink)
-
-    const exportLink = fileId
-      ? `https://drive.google.com/uc?export=view&id=${fileId}`
-      : ''
+    const exportLink =  webSettings.MainPhoto
 
     changeWebSettings({ ...webSettings, MainPhoto: exportLink }).then()
 
