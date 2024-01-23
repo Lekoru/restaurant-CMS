@@ -17,7 +17,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     menu: menuReducer,
-    user: userReducer,
+    users: userReducer,
     dishes: dishReducer,
   },
 })
