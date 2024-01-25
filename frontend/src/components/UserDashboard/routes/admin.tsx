@@ -16,12 +16,6 @@ function Admin() {
     useState<NewUserProps>(initNewUserConfig)
   const [successMessage_user, setSuccessMessage_user] = useState('')
 
-  const extractIdFromGoogleDriveLink = (link_photo: string) => {
-    const regex = /\/file\/d\/(.*?)\//
-    const match = link_photo.match(regex)
-    return match ? match[1] : null
-  }
-
   const handleSaveClick_add_user = () => {
     createUser(newUserConfig).then()
     setNewUserConfig(initNewUserConfig)
@@ -29,11 +23,7 @@ function Admin() {
   }
 
   const handleSaveClick_webPage = () => {
-
-    const exportLink =  webSettings.MainPhoto
-
-    changeWebSettings({ ...webSettings, MainPhoto: exportLink }).then()
-
+    changeWebSettings({ ...webSettings }).then()
     setWebSettings(initWebSettings)
     setSuccessMessage_web('Changes saved successfully!')
   }
