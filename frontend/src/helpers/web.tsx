@@ -162,7 +162,7 @@ export async function genUserPassword(userToGenPass: string) {
           },
         },
       )
-      .then(result => res(result))
+      .then(result => res(result.data.newPassword))
       .catch(err => {
         rej(err)
       })
