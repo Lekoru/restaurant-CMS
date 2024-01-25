@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createDish, deleteDish, editDish } from '../../../helpers/web.tsx'
 import { loadFromLocal } from '../../../helpers/storage.tsx'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DiSqllite } from 'react-icons/di'
 import { MdDelete } from 'react-icons/md'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { initNewDishProps, NewDishProps } from '../../../helpers/types.tsx'
 import { getDishesList } from '../../../redux/silces/dishesSlice.tsx'
+import { RootState } from '../../../redux/store.tsx'
 
 function Admin() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
-
+  const dishesList = useSelector((state: RootState) => state.dishes.dishesList)
   const [newDish, setNewDish] = useState<NewDishProps>(initNewDishProps)
   const [dishData, setDishData] = useState<NewDishProps>(initNewDishProps)
-  const [dishesList, setDishesList] = useState<NewDishProps[]>([])
   const [showModal, setShowModal] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
