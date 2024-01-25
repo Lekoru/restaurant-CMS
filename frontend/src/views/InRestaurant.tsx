@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getDishesList } from '../redux/silces/dishesSlice.tsx'
-import { useDispatch } from 'react-redux'
-import { NewDishProps } from '../helpers/types.tsx'
+import { useDispatch, useSelector } from 'react-redux'
 import FoodViewModal from '../ui/FoodViewModal.tsx'
+import { RootState } from '../redux/store.tsx'
 
 function InRestaurant() {
   const dispatch = useDispatch()
-  const [dishesList, setDishesList] = useState<NewDishProps[]>([])
+  const dishesList = useSelector((state: RootState) => state.dishes.dishesList)
   const [isViewingItem, setIsViewItem] = useState(
     new Array(dishesList.length).fill(false),
   )
