@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { loadFromLocal } from '../helpers/storage.tsx'
 import { getDishesList } from '../redux/silces/dishesSlice.tsx'
 import { useDispatch } from 'react-redux'
 import { NewDishProps } from '../helpers/types.tsx'
@@ -33,9 +32,6 @@ function InRestaurant() {
 
   useEffect(() => {
     dispatch(getDishesList())
-    let temp = loadFromLocal('dishesList')
-    setDishesList(temp)
-    setIsViewItem(new Array(temp.length).fill(false))
     setIsLoaded(true)
   }, [dispatch])
 
