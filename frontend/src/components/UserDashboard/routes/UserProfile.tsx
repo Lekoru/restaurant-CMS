@@ -6,13 +6,15 @@ import {
   removeUser,
 } from '../../../helpers/web.tsx'
 import { loadFromLocal } from '../../../helpers/storage.tsx'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getUsersList } from '../../../redux/silces/usersSlice.tsx'
 import { LiaExpeditedssl } from 'react-icons/lia'
 import { MdDelete } from 'react-icons/md'
+import { RootState } from '../../../redux/store.tsx'
 function UserProfile() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
+  const usersList = useSelector((state: RootState) => state.users.usersList)
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
