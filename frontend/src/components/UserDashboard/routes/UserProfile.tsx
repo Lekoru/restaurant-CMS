@@ -11,25 +11,70 @@ import { getUsersList } from '../../../redux/silces/usersSlice.tsx'
 import { LiaExpeditedssl } from 'react-icons/lia'
 import { MdDelete } from 'react-icons/md'
 import { RootState } from '../../../redux/store.tsx'
+import { Button, Modal } from 'react-bootstrap'
 function UserProfile() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
   const usersList = useSelector((state: RootState) => state.users.usersList)
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [genPassword, setGenPassword] = useState('')
+  const [isLoaded, setIsLoaded] = useState(false)
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [userData, setUserData] = useState(loadFromLocal('emauth'))
-  const [usersData, setUsersData] = useState([])
+
+  const [showDialog, setShowDialog] = useState(
+    new Array(usersList.length).fill(false),
+  )
+  const [showDialog1, setShowDialog1] = useState(
+    new Array(usersList.length).fill(false),
+  )
+
+  const showUserGenPassDial = (index: number) => {
+    setShowDialog(prevState => {
+      const temp = [...prevState]
+      temp.forEach(() => {
+        return false
+      })
+      prevState[index] = true
+      return temp
+    })
+  }
+
+  const closeUserGenPassDial = (index: number) => {
+    setShowDialog(prevState => {
+      const temp = [...prevState]
+      temp[index] = false
+      return temp
+    })
+  }
+  const showDeleteUserDial = (index: number) => {
+    setShowDialog1(prevState => {
+      const temp = [...prevState]
+      temp.forEach(() => {
+        return false
+      })
+      prevState[index] = true
+      return temp
+    })
+  }
+
+  const closeDeleteUserDial = (index: number) => {
+    setShowDialog1(prevState => {
+      const temp = [...prevState]
+      temp[index] = false
+      return temp
+    })
+  }
 
   useEffect(() => {
     dispatch(getUsersList())
-    let temp = loadFromLocal('emauth')
+    setIsLoaded(true)
+    const temp = loadFromLocal('emauth')
     if (!temp) navigate('/')
     setUserData(temp)
-    temp = loadFromLocal('usersList')
-    setUsersData(temp)
   }, [navigate, dispatch])
 
   const handleSaveClick = () => {
@@ -145,8 +190,9 @@ function UserProfile() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usersData &&
-                    usersData.map((user: any, index: number) => {
+                  {isLoaded &&
+                    usersList &&
+                    usersList.map((user: any, index: number) => {
                       return (
                         <tr key={index}>
                           <td>{user.id}</td>
@@ -157,17 +203,86 @@ function UserProfile() {
                             {
                               <LiaExpeditedssl
                                 size={30}
-                                onClick={() => genUserPassword(user.Email)}
+                                onClick={async () => {
+                                  const data = await genUserPassword(user.Email)
+                                  // @ts-ignore
+                                  data && setGenPassword(data)
+                                  showUserGenPassDial(index)
+                                }}
                               />
                             }
+                            <Modal
+                              show={showDialog[index]}
+                              onHide={() => closeUserGenPassDial(index)}
+                              aria-labelledby="contained-modal-title-vcenter"
+                              centered
+                            >
+                              <Modal.Header>
+                                <Modal.Title>
+                                  New {user.Name} password
+                                </Modal.Title>
+                              </Modal.Header>
+
+                              <Modal.Body>
+                                <p>
+                                  New user password is:
+                                  {genPassword ? genPassword : ''}
+                                </p>
+                              </Modal.Body>
+
+                              <Modal.Footer>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => closeUserGenPassDial(index)}
+                                >
+                                  Close
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
                           </td>
                           <td>
                             {
                               <MdDelete
                                 size={30}
-                                onClick={() => removeUser(user.Email)}
+                                onClick={() => showDeleteUserDial(index)}
                               />
                             }
+                            <Modal
+                              show={showDialog1[index]}
+                              onHide={() => closeDeleteUserDial(index)}
+                              aria-labelledby="contained-modal-title-vcenter"
+                              centered
+                            >
+                              <Modal.Header>
+                                <Modal.Title>Delete User</Modal.Title>
+                              </Modal.Header>
+
+                              <Modal.Body>
+                                <p>
+                                  Are you sure you want to delete {user.Name}?
+                                </p>
+                              </Modal.Body>
+
+                              <Modal.Footer>
+                                <Button
+                                  variant="warning"
+                                  onClick={() => {
+                                    removeUser(user.Email).then()
+                                    closeDeleteUserDial(index)
+                                  }}
+                                >
+                                  Yes
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => () =>
+                                    closeDeleteUserDial(index)
+                                  }
+                                >
+                                  No
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
                           </td>
                         </tr>
                       )
