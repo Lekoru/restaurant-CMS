@@ -76,7 +76,7 @@ router.post('/createUser', async (req, res) => {
       },
       { transaction },
     )
-
+    await transaction.commit()
     return res.status(200).json({ ...newUser.dataValues, Password: undefined })
   } catch (e) {
     console.error(e)
