@@ -54,5 +54,5 @@ export const initNewDishProps = {
   DishDesc: '',
   Ingredients: '',
   Photo: '',
-  Price: undefined,
+  Price: 0,
 }

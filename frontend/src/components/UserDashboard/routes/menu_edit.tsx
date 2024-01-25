@@ -2,39 +2,59 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createDish, deleteDish, editDish } from '../../../helpers/web.tsx'
 import { loadFromLocal } from '../../../helpers/storage.tsx'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DiSqllite } from 'react-icons/di'
 import { MdDelete } from 'react-icons/md'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
+import { Button, Modal } from 'react-bootstrap'
 import { initNewDishProps, NewDishProps } from '../../../helpers/types.tsx'
 import { getDishesList } from '../../../redux/silces/dishesSlice.tsx'
+import { RootState } from '../../../redux/store.tsx'
 
 function Admin() {
   let navigate = useNavigate()
   const dispatch = useDispatch()
-
+  const dishesList = useSelector((state: RootState) => state.dishes.dishesList)
   const [newDish, setNewDish] = useState<NewDishProps>(initNewDishProps)
   const [dishData, setDishData] = useState<NewDishProps>(initNewDishProps)
-  const [dishesList, setDishesList] = useState<NewDishProps[]>([])
   const [showModal, setShowModal] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const handleCloseModal = () => setShowModal(false)
+  const [showDialog, setShowDialog] = useState(
+    new Array(dishesList.length).fill(false),
+  )
+
+  const showDeleteDishDial = (index: number) => {
+    setShowDialog(prevState => {
+      const temp = [...prevState]
+      temp.forEach(() => {
+        return false
+      })
+      prevState[index] = true
+      return temp
+    })
+  }
+
+  const closeDeleteDishDial = (index: number) => {
+    setShowDialog(prevState => {
+      const temp = [...prevState]
+      temp[index] = false
+      return temp
+    })
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setDishData(initNewDishProps)
+  }
   const handleShowModal = (id: number) => {
     dishData.id = id
     setShowModal(true)
   }
 
-  const extractIdFromGoogleDriveLink = (link_photo: string) => {
-    const regex = /\/file\/d\/(.*?)\//
-    const match = link_photo.match(regex)
-    return match ? match[1] : null
-  }
-
   const handleSaveClick1 = () => {
     createDish(newDish)
       .then(() => {
+        dispatch(getDishesList())
         setSuccessMessage('Successfully created new dish.')
       })
       .catch(e => {
@@ -47,20 +67,15 @@ function Admin() {
 
   const handleSaveClick2 = async () => {
     await editDish({ ...dishData })
+    dispatch(getDishesList())
     setDishData(initNewDishProps)
     handleCloseModal()
   }
 
   useEffect(() => {
-    let temp = loadFromLocal('emauth')
+    dispatch(getDishesList())
+    const temp = loadFromLocal('emauth')
     if (!temp) navigate('/')
-    temp = loadFromLocal('dishesList')
-    if (!temp) {
-      dispatch(getDishesList())
-      temp = loadFromLocal('dishesList')
-    }
-    setDishesList(temp)
-    return localStorage.removeItem('dishesList')
   }, [navigate, dispatch])
 
   return (
@@ -194,8 +209,42 @@ function Admin() {
                         <td>
                           <MdDelete
                             size={30}
-                            onClick={() => deleteDish(dish.id)}
+                            onClick={() => showDeleteDishDial(index)}
                           />
+                          <Modal
+                            show={showDialog[index]}
+                            onHide={() => closeDeleteDishDial(index)}
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered
+                          >
+                            <Modal.Header>
+                              <Modal.Title>Delete Dish</Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                              <p>
+                                Are you sure you want to delete {dish.DishName}?
+                              </p>
+                            </Modal.Body>
+
+                            <Modal.Footer>
+                              <Button
+                                variant="warning"
+                                onClick={() => {
+                                  deleteDish(dish.id).then()
+                                  closeDeleteDishDial(index)
+                                }}
+                              >
+                                Yes
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                onClick={() => closeDeleteDishDial(index)}
+                              >
+                                No
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
                         </td>
                       </tr>
                     )
