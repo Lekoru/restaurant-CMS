@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { get_users } from '../../helpers/web.tsx'
-import { saveToLocal } from '../../helpers/storage.tsx'
 import { UserState } from '../../helpers/types.tsx'
 
 const initialState: UserState = {
@@ -24,7 +23,6 @@ export const getUsersList = () => async (dispatch: any) => {
     .then(res => res)
     .catch(e => console.error(e))
   if (data && data.usersList.length >= 1) {
-    saveToLocal(data.usersList, 'usersList')
     dispatch(setUsersList(data.usersList))
   }
 }
