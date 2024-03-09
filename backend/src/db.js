@@ -3,8 +3,9 @@ dotenv.config()
 
 import { Sequelize } from 'sequelize'
 import initModels from './models/init-models.js'
+import pg from 'pg'
 
-const sequelize = new Sequelize(process.env.DB_URL, { dialect: 'postgres' })
+const sequelize = new Sequelize(process.env.DB_URL, { dialectModule: pg })
 
 sequelize
   .authenticate()

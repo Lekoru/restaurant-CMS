@@ -1,13 +1,17 @@
 import dotenv from 'dotenv'
+import pg from 'pg'
+const Client = pg.Client
 dotenv.config()
 
 import { Sequelize, DataTypes } from 'sequelize'
 
-import Users from './models/Users.js'
-import Menu from './models/Menu.js'
-import webSettings from './models/WebSettings.js'
+import Users from './models/users.js'
+import Menu from './models/menu.js'
+import webSettings from './models/websettings.js'
 
-const sequelize = new Sequelize(process.env.DB_URL, { dialect: 'postgres' })
+const sequelize = new Sequelize(process.env.DB_URL, {
+  dialectModule: pg,
+})
 
 async function connTest() {
   try {
@@ -28,6 +32,7 @@ const db = {
   webSettings: webSettings(sequelize, DataTypes),
   options: {
     dialect: 'postgres',
+    dialectModule: pg,
     ssl: true,
   },
 }

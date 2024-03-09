@@ -6,8 +6,10 @@ import { Sequelize, DataTypes } from 'sequelize'
 import Users from './models/users.js'
 import Menu from './models/menu.js'
 import WebSettings from './models/websettings.js'
+import pg from 'pg'
+const Client = pg.Client
 
-const sequelize = new Sequelize(process.env.DB_URL, { dialect: 'postgres' })
+const sequelize = new Sequelize(process.env.DB_URL, { dialectModule: pg })
 
 const options = {
   directory: './src/models/',

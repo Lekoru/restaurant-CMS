@@ -2,7 +2,8 @@ import axios from 'axios'
 import { loadFromLocal } from './storage.tsx'
 import { NewDishProps, NewUserProps, webSettingsProps } from './types.tsx'
 
-const backendHost = 'http://localhost:3001/api/'
+const backendHost =
+  'https://restautany-iuy3rtx44-youkkis-projects.vercel.app/api/'
 
 /*     User routes     */
 export async function login(data: { Email: string; Password: string }) {
